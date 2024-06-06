@@ -1,27 +1,26 @@
 print("Sensors and Actuators")
-relay1_ON  = [1, 6, 0, 0, 0, 255, 201, 138]
-relay1_OFF = [1, 6, 0, 0, 0, 0, 137, 202]
 
-relay2_ON  = [2, 6, 0, 0, 0, 255, 201, 185]
-relay2_OFF = [2, 6, 0, 0, 0, 0, 137, 249]
+relay_ON = [
+    [1, 6, 0, 0, 0, 255, 201, 138   ],
+    [2, 6, 0, 0, 0, 255, 201, 185   ],
+    [3, 6, 0, 0, 0, 255, 200, 104   ],
+    [4, 6, 0, 0, 0, 255, 201, 223   ],
+    [5, 6, 0, 0, 0, 255, 200, 14    ],
+    [6, 6, 0, 0, 0, 255, 200, 61    ],
+    [7, 6, 0, 0, 0, 255, 201, 236   ],
+    [8, 6, 0, 0, 0, 255, 201, 19    ]
+]
+relay_OFF = [
+    [1, 6, 0, 0, 0, 0, 137, 202 ],
+    [2, 6, 0, 0, 0, 0, 137, 249 ],
+    [3, 6, 0, 0, 0, 0, 136, 40  ],
+    [4, 6, 0, 0, 0, 0, 137, 159 ],
+    [5, 6, 0, 0, 0, 0, 136, 78  ],
+    [6, 6, 0, 0, 0, 0, 136, 125 ],
+    [7, 6, 0, 0, 0, 0, 137, 172 ],
+    [8, 6, 0, 0, 0, 0, 137, 83  ]
+]
 
-relay3_ON  = [3, 6, 0, 0, 0, 255, 200, 104]
-relay3_OFF = [3, 6, 0, 0, 0, 0, 136, 40]
-
-relay4_ON  = [4, 6, 0, 0, 0, 255, 201, 223]
-relay4_OFF = [4, 6, 0, 0, 0, 0, 137, 159]
-
-relay5_ON  = [5, 6, 0, 0, 0, 255, 200, 14]
-relay5_OFF = [5, 6, 0, 0, 0, 0, 136, 78]
-
-relay6_ON  = [6, 6, 0, 0, 0, 255, 200, 61]
-relay6_OFF = [6, 6, 0, 0, 0, 0, 136, 125]
-
-relay7_ON  = [7, 6, 0, 0, 0, 255, 201, 236]
-relay7_OFF = [7, 6, 0, 0, 0, 0, 137, 172]
-
-relay8_ON  = [8, 6, 0, 0, 0, 255, 201, 19]
-relay8_OFF = [8, 6, 0, 0, 0, 0, 137, 83]
 soil_temperature = [10, 3, 0, 6, 0, 1, 101, 112]
 soil_humidity = [10, 3, 0, 7, 0, 1, 52, 176]
 
@@ -60,14 +59,14 @@ except:
 # relay1_ON  = [0, 6, 0, 0, 0, 255, 200, 91]
 # relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
 
-def setDevice1(state):
+def setDevice(id, state):
     if state == True:
         print("Device 1 is turn ON")
-        ser.write(relay1_ON)
+        ser.write(relay_ON[id-1])
     else:
         print("Device 1 is turn OFF")
         
-        ser.write(relay1_OFF)
+        ser.write(relay_OFF[id-1])
     time.sleep(1)
     
     print(f"Get reponse: {serial_read_data(ser)}")
@@ -100,15 +99,15 @@ def readMoisture():
     time.sleep(1)
     return serial_read_data(ser)
 
-# while True:
-#     setDevice1(True)
-#     time.sleep(2)
-#     setDevice1(False)
-#     time.sleep(2)
-
 while True:
-    print("TEST SENSOR")
-    print(readMoisture())
-    time.sleep(1)
-    print(readTemperature())
-    time.sleep(1)
+    setDevice(1,True)
+    time.sleep(2)
+    setDevice(1,False)
+    time.sleep(2)
+
+# while True:
+#     print("TEST SENSOR")
+#     print(readMoisture())
+#     time.sleep(1)
+#     print(readTemperature())
+#     time.sleep(1)
