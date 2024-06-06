@@ -16,7 +16,7 @@ def getPort():
     return commPort
     # return "/dev/ttyUSB1"
 
-portName = "/dev/ttyUSB1"
+portName = "/dev/ttyUSB0"
 print(portName)
 
 port_available = getPort()
