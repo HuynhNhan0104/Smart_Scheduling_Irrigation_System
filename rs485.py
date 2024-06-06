@@ -22,7 +22,7 @@ relay7_OFF = [7, 6, 0, 0, 0, 0, 137, 172]
 
 relay8_ON  = [8, 6, 0, 0, 0, 255, 201, 19]
 relay8_OFF = [8, 6, 0, 0, 0, 0, 137, 83]
-soil_temperature =[10, 3, 0, 6, 0, 1, 101, 112]
+soil_temperature = [10, 3, 0, 6, 0, 1, 101, 112]
 soil_humidity = [10, 3, 0, 7, 0, 1, 52, 176]
 
 
@@ -83,8 +83,8 @@ def serial_read_data(ser):
             value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
             return value
         else:
-            return -1
-    return 0
+            return 400
+    return 404
 
 # soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
 def readTemperature():
