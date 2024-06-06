@@ -1,3 +1,4 @@
+# cd ~/Desktop/IOT232_L01/2013961/Smart_Scheduling_Irrigation_System
 print("Sensors and Actuators")
 
 relay_ON = [
@@ -23,7 +24,8 @@ relay_OFF = [
 
 soil_temperature = [10, 3, 0, 6, 0, 1, 101, 112]
 soil_humidity = [10, 3, 0, 7, 0, 1, 52, 176]
-
+distance1_ON = [9, 3, 0, 5, 0, 1, 149, 67]
+distance2_ON = [12, 3, 0, 5, 0, 1, 149, 22]
 
 valve_controll_message = ''
 
@@ -61,11 +63,12 @@ except:
 
 def setDevice(id, state):
     if state == True:
-        print("Device 1 is turn ON")
+        print(f"Device {id} is turn ON")
+        print(f"command is :{ relay_ON[id-1]}")
         ser.write(relay_ON[id-1])
     else:
-        print("Device 1 is turn OFF")
-        
+        print(f"Device {id} is turn OFF")
+        print(f"command is :{ relay_OFF[id-1]}")
         ser.write(relay_OFF[id-1])
     time.sleep(1)
     
