@@ -85,8 +85,8 @@ def serial_read_data(ser):
             value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
             return value
         else:
-            return 400
-    return 404
+            return "Wrong size"
+    return "No Data"
 
 # soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
 def readTemperature():
