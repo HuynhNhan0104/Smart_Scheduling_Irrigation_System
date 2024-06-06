@@ -1,4 +1,29 @@
 print("Sensors and Actuators")
+relay1_ON  = [1, 6, 0, 0, 0, 255, 201, 138]
+relay1_OFF = [1, 6, 0, 0, 0, 0, 137, 202]
+
+relay2_ON  = [2, 6, 0, 0, 0, 255, 201, 185]
+relay2_OFF = [2, 6, 0, 0, 0, 0, 137, 249]
+
+relay3_ON  = [3, 6, 0, 0, 0, 255, 200, 104]
+relay3_OFF = [3, 6, 0, 0, 0, 0, 136, 40]
+
+relay4_ON  = [4, 6, 0, 0, 0, 255, 201, 223]
+relay4_OFF = [4, 6, 0, 0, 0, 0, 137, 159]
+
+relay5_ON  = [5, 6, 0, 0, 0, 255, 200, 14]
+relay5_OFF = [5, 6, 0, 0, 0, 0, 136, 78]
+
+relay6_ON  = [6, 6, 0, 0, 0, 255, 200, 61]
+relay6_OFF = [6, 6, 0, 0, 0, 0, 136, 125]
+
+relay7_ON  = [7, 6, 0, 0, 0, 255, 201, 236]
+relay7_OFF = [7, 6, 0, 0, 0, 0, 137, 172]
+
+relay8_ON  = [8, 6, 0, 0, 0, 255, 201, 19]
+relay8_OFF = [8, 6, 0, 0, 0, 0, 137, 83]
+
+valve_controll_message = ''
 
 import time
 import serial.tools.list_ports
@@ -29,8 +54,8 @@ try:
 except:
     print("Can not open the port")
 
-relay1_ON  = [0, 6, 0, 0, 0, 255, 200, 91]
-relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
+# relay1_ON  = [0, 6, 0, 0, 0, 255, 200, 91]
+# relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
 
 def setDevice1(state):
     if state == True:
