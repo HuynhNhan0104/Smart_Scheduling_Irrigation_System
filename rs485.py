@@ -34,11 +34,15 @@ relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
 
 def setDevice1(state):
     if state == True:
+        print("Device 1 is turn ON")
         ser.write(relay1_ON)
     else:
+        print("Device 1 is turn OFF")
+        
         ser.write(relay1_OFF)
     time.sleep(1)
-    print(serial_read_data(ser))
+    
+    print(f"Get reponse: {serial_read_data(ser)}")
     
 def serial_read_data(ser):
     bytesToRead = ser.inWaiting()
