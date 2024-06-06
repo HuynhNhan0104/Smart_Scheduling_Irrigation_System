@@ -22,6 +22,9 @@ relay7_OFF = [7, 6, 0, 0, 0, 0, 137, 172]
 
 relay8_ON  = [8, 6, 0, 0, 0, 255, 201, 19]
 relay8_OFF = [8, 6, 0, 0, 0, 0, 137, 83]
+soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
+soil_humidity = [1, 3, 0, 7, 0, 1, 53, 203]
+
 
 valve_controll_message = ''
 
@@ -83,29 +86,29 @@ def serial_read_data(ser):
             return -1
     return 0
 
-soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
+# soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
 def readTemperature():
     serial_read_data(ser)
     ser.write(soil_temperature)
     time.sleep(1)
     return serial_read_data(ser)
 
-soil_moisture = [1, 3, 0, 7, 0, 1, 53, 203]
+# soil_moisture = [1, 3, 0, 7, 0, 1, 53, 203]
 def readMoisture():
     serial_read_data(ser)
-    ser.write(soil_moisture)
+    ser.write(soil_humidity)
     time.sleep(1)
     return serial_read_data(ser)
 
-while True:
-    setDevice1(True)
-    time.sleep(2)
-    setDevice1(False)
-    time.sleep(2)
-
 # while True:
-#     print("TEST SENSOR")
-#     print(readMoisture())
-#     time.sleep(1)
-#     print(readTemperature())
-#     time.sleep(1)
+#     setDevice1(True)
+#     time.sleep(2)
+#     setDevice1(False)
+#     time.sleep(2)
+
+while True:
+    print("TEST SENSOR")
+    print(readMoisture())
+    time.sleep(1)
+    print(readTemperature())
+    time.sleep(1)
