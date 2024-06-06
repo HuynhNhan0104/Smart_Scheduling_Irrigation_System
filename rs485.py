@@ -37,14 +37,7 @@ def setDevice1(state):
         ser.write(relay1_OFF)
     time.sleep(1)
     print(serial_read_data(ser))
-
-while True:
-    setDevice1(True)
-    time.sleep(2)
-    setDevice1(False)
-    time.sleep(2)
-
-
+    
 def serial_read_data(ser):
     bytesToRead = ser.inWaiting()
     if bytesToRead > 0:
@@ -72,6 +65,12 @@ def readMoisture():
     ser.write(soil_moisture)
     time.sleep(1)
     return serial_read_data(ser)
+
+# while True:
+#     setDevice1(True)
+#     time.sleep(2)
+#     setDevice1(False)
+#     time.sleep(2)
 
 while True:
     print("TEST SENSOR")
