@@ -23,7 +23,7 @@ relay7_OFF = [7, 6, 0, 0, 0, 0, 137, 172]
 relay8_ON  = [8, 6, 0, 0, 0, 255, 201, 19]
 relay8_OFF = [8, 6, 0, 0, 0, 0, 137, 83]
 soil_temperature =[10, 3, 0, 6, 0, 1, 101, 112]
-soil_humidity = [10, 3, 0, 7, 0, 1, 53, 176]
+soil_humidity = [10, 3, 0, 7, 0, 1, 52, 176]
 
 
 valve_controll_message = ''
