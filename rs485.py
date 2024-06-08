@@ -64,15 +64,15 @@ except:
 def setDevice(id, state):
     if state == True:
         print(f"Device {id} is turn ON")
-        print(f"command is :{ relay_ON[id-1]}")
+        # print(f"command is :{ relay_ON[id-1]}")
         ser.write(relay_ON[id-1])
     else:
         print(f"Device {id} is turn OFF")
-        print(f"command is :{ relay_OFF[id-1]}")
+        # print(f"command is :{ relay_OFF[id-1]}")
         ser.write(relay_OFF[id-1])
     time.sleep(1)
-    
-    print(f"Get reponse: {serial_read_data(ser)}")
+    response = serial_read_data(ser)
+    print(f"Get reponse: {response}")
     
 def serial_read_data(ser):
     bytesToRead = ser.inWaiting()
