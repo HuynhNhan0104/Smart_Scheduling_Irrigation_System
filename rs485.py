@@ -106,7 +106,7 @@ def readMoisture():
 
 
 def readDistance(index):
-    print(f"Reading sonar{ index}")
+    print(f"Reading sonar { index}")
     serial_read_data(ser)
     if index not in [1,2]:
         return "ERROR index out range"
