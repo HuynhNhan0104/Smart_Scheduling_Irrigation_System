@@ -90,6 +90,7 @@ def serial_read_data(ser):
 
 # soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
 def readTemperature():
+    print("reading temperature soil")
     serial_read_data(ser)
     ser.write(soil_temperature)
     time.sleep(1)
@@ -97,6 +98,7 @@ def readTemperature():
 
 # soil_moisture = [1, 3, 0, 7, 0, 1, 53, 203]
 def readMoisture():
+    print("reading moisture")
     serial_read_data(ser)
     ser.write(soil_humidity)
     time.sleep(1)
@@ -104,6 +106,7 @@ def readMoisture():
 
 
 def readDistance(index):
+    print(f"Reading sonar{ index}")
     serial_read_data(ser)
     if index not in [1,2]:
         return "ERROR index out range"
@@ -129,5 +132,7 @@ while True:
     time.sleep(1)
     print(readTemperature())
     time.sleep(1)
-    print(readDistance())
+    print(readDistance(1))
+    time.sleep(1)
+    print(readDistance(1))
     time.sleep(1)
