@@ -14,12 +14,13 @@ class Task:
     RunMe = 0                   # set state of sched: 1 -> 0 -> Run pTask (pTask is a pointer function)
     TaskID = -1                                                                                                                          
     
-QUEUE = 1                                                                                                                                
-TICK_CYCLE = 10                                                                                                                          
-q = Queue()    
+# QUEUE = 1                                                                                                                                
+TICK_CYCLE = 10       
+print(f"Tick cycle is {TICK_CYCLE} ms or {TICK_CYCLE/1000} s")                                                                                                                   
+# q = Queue()    
                                                                                                                           
 class Scheduler:
-    TICK = 100                  
+    TICK = TICK_CYCLE                 
     SCH_MAX_TASKS = 40          
     SCH_tasks_G = []            # List task (type list)
     current_index_task = 0      # total number task current 
@@ -75,19 +76,33 @@ class TaskManagament:
     self.scheduler_run = True
     self.scheduler = Scheduler()                                                                                                         
     self.scheduler.SCH_Init()                                                                                                            
-    self.system = IrrigationSystem()                                                                                                     
+    # self.system = IrrigationSystem()                                                                                                     
     
   def run(self):
-    self.scheduler.SCH_Add_Task(self.system.run_irrigation, 0, 1000)                                                                     
-    self.scheduler.SCH_Add_Task(self.system.control_pump, 1000, 3000)                                                                    
+    # self.scheduler.SCH_Add_Task(self.system.run_irrigation, 0, 1000)                                                                     
+    # self.scheduler.SCH_Add_Task(self.system.control_pump, 1000, 3000)                                                                    
     try:
-      # self.scheduler.SCH_Add_Task(self.system.readSensor, 0, 1000)
-      self.scheduler.SCH_Add_Task(self.system.readSensorTest, 0, 1000)                                                                   
-      self.system.cloud.connect()                                                                                                        
+        # self.scheduler.SCH_Add_Task(self.system.readSensor, 0, 1000) 
+        self.scheduler.SCH_Add_Task(Say_hello, 0, 0)                                                                   
+        # self.system.cloud.connect()                                                                                                        
     except Exception as e:
         print("Error: ", e)
         
     while self.scheduler_run:
       self.scheduler.SCH_Update()                                                                                                        
       self.scheduler.SCH_Dispatch_Tasks()                                                                                                
-      time.sleep(0.1)
+      time.sleep(TICK_CYCLE/1000)
+
+
+def Say_hello():
+    print("-----------------System Starting----------------")
+
+
+
+
+# try: 
+#     my_scheduler = TaskManagament()
+#     my_scheduler.run()
+
+# except KeyboardInterrupt:
+#     my_scheduler.run = False

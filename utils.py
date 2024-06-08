@@ -14,13 +14,14 @@ def convert_to_time(time):
     return data
                                                                                                                                          
 # Chuỗi thời gian ban đầu
-time_string = "11 Oct 2023 13:57:00"
+# time_string = "11 Oct 2023 13:57:00"
                                                                                                                                          
-def convert_datetime():
+def convert_datetime(time_string):
     time_format = "%d %b %Y %H:%M:%S"
                                                                                                                                             
     date_created = datetime.strptime(time_string, time_format)                                                                             
     timestamp = date_created.timestamp()                                                                                                   
                                                                                                                                             
     print("Timestamp:", timestamp)
-    print(format_time(timestamp))  
+    print("Format time",format_time(timestamp))  
+    return timestamp
