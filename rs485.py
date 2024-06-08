@@ -134,5 +134,5 @@ while True:
     time.sleep(1)
     print(readDistance(1))
     time.sleep(1)
-    print(readDistance(1))
+    print(readDistance(2))
     time.sleep(1)
