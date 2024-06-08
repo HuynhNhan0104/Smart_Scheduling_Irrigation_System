@@ -102,17 +102,17 @@ def readMoisture():
     time.sleep(1)
     return serial_read_data(ser)
 
-while True:
-    for idx, relay in enumerate(relay_ON):
-        setDevice(idx+1,True)
-        time.sleep(2)
-    for idx, relay in enumerate(relay_ON):
-        setDevice(idx+1,False)
-        time.sleep(2)
-
 # while True:
-#     print("TEST SENSOR")
-#     print(readMoisture())
-#     time.sleep(1)
-#     print(readTemperature())
-#     time.sleep(1)
+#     for idx, relay in enumerate(relay_ON):
+#         setDevice(idx+1,True)
+#         time.sleep(2)
+#     for idx, relay in enumerate(relay_ON):
+#         setDevice(idx+1,False)
+#         time.sleep(2)
+
+while True:
+    print("TEST SENSOR")
+    print(readMoisture())
+    time.sleep(1)
+    print(readTemperature())
+    time.sleep(1)
