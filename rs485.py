@@ -118,22 +118,22 @@ def readDistance(index):
     return serial_read_data(ser)
     
 
-# while True:
-#     for idx in range(0,7):
-#         setDevice(idx+1,True)
-#         time.sleep(2)
-#         setDevice(idx+1,False)
-#         time.sleep(2)
+while True:
+    for idx in range(0,7):
+        setDevice(idx+1,True)
+        time.sleep(2)
+        setDevice(idx+1,False)
+        time.sleep(2)
     # for idx, relay in enumerate(relay_ON):
         
 
-while True:
-    print("TEST SENSOR")
-    print(readMoisture())
-    time.sleep(1)
-    print(readTemperature())
-    time.sleep(1)
-    print(readDistance(1))
-    time.sleep(1)
-    print(readDistance(2))
-    time.sleep(1)
+# while True:
+#     print("TEST SENSOR")
+#     print(readMoisture())
+#     time.sleep(1)
+#     print(readTemperature())
+#     time.sleep(1)
+#     print(readDistance(1))
+#     time.sleep(1)
+#     print(readDistance(2))
+#     time.sleep(1)
