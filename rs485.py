@@ -102,6 +102,19 @@ def readMoisture():
     time.sleep(1)
     return serial_read_data(ser)
 
+
+def readDistance(index):
+    serial_read_data(ser)
+    if index not in [1,2]:
+        return "ERROR index out range"
+    if index == 1:
+        ser.write(distance1_ON)
+    if index == 2:
+        ser.write(distance2_ON)
+    time.sleep(1)
+    return serial_read_data(ser)
+    
+
 # while True:
 #     for idx, relay in enumerate(relay_ON):
 #         setDevice(idx+1,True)
@@ -115,4 +128,6 @@ while True:
     print(readMoisture())
     time.sleep(1)
     print(readTemperature())
+    time.sleep(1)
+    print(readDistance())
     time.sleep(1)
