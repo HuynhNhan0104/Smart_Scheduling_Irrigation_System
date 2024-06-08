@@ -1,6 +1,7 @@
 from queue import Queue
 # from system import IrrigationSystem
 import time
+import datetime
 from threading import Thread
 class Task:
     def __init__(self, _pTask, _Delay, _Period):
@@ -38,6 +39,20 @@ class Scheduler:
         self.current_index_task += 1                                                                                                     
       else:
         print("PrivateTasks are full!!!")
+        
+    def SCH_Add_Task_with_specific_time(self, pFunction,datetime_str,datetime_format,cycle = 0):
+        try:
+            expected_datetime = datetime.datetime.strptime(datetime_str,datetime_format)
+            excepted_timestamp = expected_datetime.timestamp()
+            current_timestamp = time.time()
+            differ_time = excepted_timestamp - current_timestamp
+            if differ_time >= 0:
+                self.SCH_Add_Task(pFunction,differ_time*1000,10*1000)
+            else:
+                print("ERROR: TIME SUPPLY IS NOT VALID!")
+        except Exception as e:
+            print(e)
+      
                                                                                                                                             
     def SCH_Update(self):
         for i in range(0, len(self.SCH_tasks_G)):
