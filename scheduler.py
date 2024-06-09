@@ -3,6 +3,15 @@ from queue import Queue
 import time
 import datetime
 from threading import Thread
+from enum import Enum
+import json
+
+
+def print_current_datetime():
+    current_datetime = datetime.datetime.now()
+    # print(type(current_daytime))
+    current_str = current_datetime.strftime('%H:%M:%S %d-%m-%Y')
+    print(f"Function working at: {current_str}")
 class Task:
     def __init__(self, _pTask, _Delay, _Period):
         self.pTask = _pTask                                                                                                              
@@ -36,9 +45,11 @@ class Scheduler:
         aTask = Task(pFunction, DELAY / self.TICK, PERIOD / self.TICK)                                                                   
         aTask.TaskID = self.current_index_task                                                                                           
         self.SCH_tasks_G.append(aTask)                                                                                                   
-        self.current_index_task += 1                                                                                                     
+        self.current_index_task += 1        
+        return aTask.TaskID                                                                                            
       else:
         print("PrivateTasks are full!!!")
+        return -1
         
     def SCH_Add_Task_with_specific_time(self, pFunction,datetime_str,datetime_format,cycle = 0):
         try:
@@ -47,11 +58,14 @@ class Scheduler:
             current_timestamp = time.time()
             differ_time = excepted_timestamp - current_timestamp
             if differ_time >= 0:
-                self.SCH_Add_Task(pFunction,differ_time*1000,10*1000)
+                return self.SCH_Add_Task(pFunction,differ_time*1000,10*1000)
             else:
                 print("ERROR: TIME SUPPLY IS NOT VALID!")
+                return -1
         except Exception as e:
             print(e)
+            return -1
+            
       
                                                                                                                                             
     def SCH_Update(self):
@@ -80,7 +94,13 @@ class Scheduler:
         if aTask in self.SCH_tasks_G:
             self.SCH_tasks_G.remove(aTask)                                                                                                   
             self.current_index_task -= 1  
-
+    def SCH_Remove_with_id(self, Task_id):
+        print(self.SCH_tasks_G)
+        aTask = next((item for item in self.SCH_tasks_G if item.TaskID == Task_id), -1)
+        self.SCH_Delete(aTask)
+        print(self.SCH_tasks_G)
+        
+        
     def SCH_Detele_All(self):
         pass  
                                                                                                                                             
@@ -113,8 +133,69 @@ def Say_hello():
     print("-----------------System Starting----------------")
 
 
-
-
+class Schedule:
+    class State(Enum):
+        NOT_ACTIVE = 0
+        WAITING = 1
+        RUNNING = 2
+        
+    def __init__(self, name, start ,stop ,cycle, area):
+        self.name = name
+        self.start = start
+        self.stop = stop
+        self.area = area
+        self.cycle = cycle
+        self.state = self.State.WAITING
+    def to_json(self):
+        json_object =  {
+            "name":self.name,
+            "start":self.start,
+            "stop":self.stop, 
+            "area":self.area, 
+            "cycle":self.cycle,
+            "state":self.state
+        }
+        return json_object
+    
+    def to_string(self):
+        json_object = self.to_json()
+        return json.dumps(json_object,indent=4)
+        
+        
+class ScheduleManager():
+    def __init__(self):
+        self.scheduler_run = True
+        self.scheduler = Scheduler()                                                                                                         
+        self.scheduler.SCH_Init()
+        self.schedule_list = [] 
+    def print_schedule_list(self):
+        if len(self.schedule_list) > 0:
+            for schedule_item in self.schedule_list:
+                print(f"---------------------Schdedule Id:{schedule_item.get("id")}---------------------")
+                print(schedule_item.to_string())
+        else: 
+            print("List is empty")
+            
+        
+    def add_schedule(self,schedule):
+        id = self.scheduler.SCH_Add_Task_with_specific_time(print_current_datetime, schedule.start,"%d %b %Y %H:%M:%S")
+        self.schedule_list.append({"id":id,"schedule":schedule})
+        # self.scheduler.SCH_Add_Task_with_specific_time(self.stop_schedule, schedule.stop,"%d %b %Y %H:%M:%S")
+        
+    def stop_schedule(self,id):
+        self.scheduler.SCH_Remove_with_id(id)
+        
+    def remove_schedule(self, name):
+        self.schedule_list = [item for item in self.schedule_list if item["name"] != name]
+    def disable_schedule(self, name):
+        pass
+        # next([for item in self.scheduler_list if item["name"] == name],-1)
+        
+        
+        
+        
+        
+    
 # try: 
 #     my_scheduler = TaskManagament()
 #     my_scheduler.run()
