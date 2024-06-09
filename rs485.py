@@ -45,84 +45,85 @@ def getPort():
     return commPort
     # return "/dev/ttyUSB1"
 
-portName = "/dev/ttyUSB0"
+# portName = "/dev/ttyUSB0"
 # print(portName)
 
 port_available = getPort()
 print(port_available)
-ser = None
+class Modbus485:
+    ser = None
+    def __init__(self, portName = "/dev/ttyUSB0", baudrate = 9600):
+        try:
+            self.ser = serial.Serial(port=portName, baudrate=9600)
+            print("Open successfully")
+        except:
+            print("Can not open the port")
 
-try:
-    ser = serial.Serial(port=portName, baudrate=9600)
-    print("Open successfully")
-except:
-    print("Can not open the port")
+    # relay1_ON  = [0, 6, 0, 0, 0, 255, 200, 91]
+    # relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
 
-# relay1_ON  = [0, 6, 0, 0, 0, 255, 200, 91]
-# relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
-
-def setDevice(id, state):
-    if state == True:
-        print(f"Device {id} is turn ON")
-        # print(f"command is :{ relay_ON[id-1]}")
-        ser.write(relay_ON[id-1])
-    else:
-        print(f"Device {id} is turn OFF")
-        # print(f"command is :{ relay_OFF[id-1]}")
-        ser.write(relay_OFF[id-1])
-    time.sleep(1)
-    response = serial_read_data(ser)
-    print(f"Get reponse: {response}")
-    
-def serial_read_data(ser):
-    bytesToRead = ser.inWaiting()
-    if bytesToRead > 0:
-        out = ser.read(bytesToRead)
-        data_array = [b for b in out]
-        print(f"BUFFER: {data_array}")
-        if len(data_array) >= 7:
-            array_size = len(data_array)
-            value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
-            return value
+    def setDevice(self,id, state):
+        if state == True:
+            print(f"Device {id} is turn ON")
+            # print(f"command is :{ relay_ON[id-1]}")
+            self.ser.write(relay_ON[id-1])
         else:
-            return "Wrong size"
-    return "No Data"
+            print(f"Device {id} is turn OFF")
+            # print(f"command is :{ relay_OFF[id-1]}")
+            self.ser.write(relay_OFF[id-1])
+        time.sleep(1)
+        response = self.serial_read_data()
+        print(f"Get reponse: {response}")
+        
+    def serial_read_data(self):
+        bytesToRead = self.ser.inWaiting()
+        if bytesToRead > 0:
+            out = self.ser.read(bytesToRead)
+            data_array = [b for b in out]
+            print(f"BUFFER: {data_array}")
+            if len(data_array) >= 7:
+                array_size = len(data_array)
+                value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
+                return value
+            else:
+                return "Wrong size"
+        return "No Data"
 
-# soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
-def readTemperature():
-    print("reading temperature soil")
-    serial_read_data(ser)
-    ser.write(soil_temperature)
-    time.sleep(1)
-    return serial_read_data(ser)
+    # soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
+    def readTemperature(self):
+        print("reading temperature soil")
+        self.serial_read_data()
+        self.ser.write(soil_temperature)
+        time.sleep(1)
+        return self.serial_read_data()
 
-# soil_moisture = [1, 3, 0, 7, 0, 1, 53, 203]
-def readMoisture():
-    print("reading moisture")
-    serial_read_data(ser)
-    ser.write(soil_humidity)
-    time.sleep(1)
-    return serial_read_data(ser)
+    # soil_moisture = [1, 3, 0, 7, 0, 1, 53, 203]
+    def readMoisture(self):
+        print("reading moisture")
+        self.serial_read_data()
+        self.ser.write(soil_humidity)
+        time.sleep(1)
+        return self.serial_read_data()
 
 
-def readDistance(index):
-    print(f"Reading sonar { index}")
-    serial_read_data(ser)
-    if index not in [1,2]:
-        return "ERROR index out range"
-    if index == 1:
-        ser.write(distance1_ON)
-    if index == 2:
-        ser.write(distance2_ON)
-    time.sleep(1)
-    return serial_read_data(ser)
+    def readDistance(self,index):
+        print(f"Reading sonar { index}")
+        self.serial_read_data()
+        if index not in [1,2]:
+            return "ERROR index out range"
+        if index == 1:
+            self.ser.write(distance1_ON)
+        if index == 2:
+            self.ser.write(distance2_ON)
+        time.sleep(1)
+        return self.serial_read_data()
     
-
+my_rs485 = Modbus485()
 while True:
     for idx in range(0,7):
-        setDevice(idx+1,True)
+        my_rs485.setDevice(idx+1,True)
         time.sleep(2)
-        setDevice(idx+1,False)
+        my_rs485.setDevice(idx+1,False)
         time.sleep(2)
     # for idx, relay in enumerate(relay_ON):
         
