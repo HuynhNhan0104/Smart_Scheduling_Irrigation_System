@@ -163,46 +163,46 @@ class ActivityManager:
                 pass
 
 
-act1 = {
-        # "id": -1,
-        "name": "lich tuoi 1",
-        "is_active": True,
-        # "state": Activity.State.READY.name,
-        "cycle": 1,
-        "start_time": "11:02:00 10-06-2024" ,
-        "stop_time": "11:03:00 10-06-2024",
-        "flow1": 10,
-        "flow2": 10,
-        "flow3": 10,
-        "selector": 1,
-    }
-act1 = Activity(**act1)
-act2 = {
-        # "id": -1,
-        "name": "lich tuoi 2",
-        "is_active": True,
-        # "state": Activity.State.READY.name,
-        "cycle": 1,
-        "start_time": "11:04:00 10-06-2024",
-        "stop_time": "11:05:00 10-06-2024",
-        "flow1": 10,
-        "flow2": 10,
-        "flow3": 10,
-        "selector": 1,
-    }
-act2 = Activity(**act2)
+# act1 = {
+#         # "id": -1,
+#         "name": "lich tuoi 1",
+#         "is_active": True,
+#         # "state": Activity.State.READY.name,
+#         "cycle": 1,
+#         "start_time": "11:02:00 10-06-2024" ,
+#         "stop_time": "11:03:00 10-06-2024",
+#         "flow1": 10,
+#         "flow2": 10,
+#         "flow3": 10,
+#         "selector": 1,
+#     }
+# act1 = Activity(**act1)
+# act2 = {
+#         # "id": -1,
+#         "name": "lich tuoi 2",
+#         "is_active": True,
+#         # "state": Activity.State.READY.name,
+#         "cycle": 1,
+#         "start_time": "11:04:00 10-06-2024",
+#         "stop_time": "11:05:00 10-06-2024",
+#         "flow1": 10,
+#         "flow2": 10,
+#         "flow3": 10,
+#         "selector": 1,
+#     }
+# act2 = Activity(**act2)
 
-manager = ActivityManager()
-manager.add_activity(act1)
-manager.add_activity(act2)
+# manager = ActivityManager()
+# manager.add_activity(act1)
+# manager.add_activity(act2)
 
 
-while True:
-    try:
-        manager.run_activity()
-        time.sleep(0.1)
-    except KeyboardInterrupt:
-        break
+# while True:
+#     try:
+#         manager.run_activity()
+#         time.sleep(0.1)
+#     except KeyboardInterrupt:
+#         break
         
     
             
