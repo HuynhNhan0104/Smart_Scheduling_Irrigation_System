@@ -48,7 +48,7 @@ class System:
     
     
     modbus485 = Modbus485()
-    mqtt_handler = MQTTHelper()
+    # mqtt_handler = MQTTHelper()
     scheduler = Scheduler()
     
     flow1 = 20
