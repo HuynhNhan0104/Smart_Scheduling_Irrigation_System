@@ -100,23 +100,25 @@ class System:
             self.send_command_reliable(relay_ON[Relay.MIX1.value-1], self.State.MIXER1_WATING)
                     
         elif self.state == self.State.MIXER1_WATING:
-            current = time.time()
-            if not self.is_waiting_response:
-                if current - self.start_send > self.flow1:
-                    print(f"delta = {current - self.start_send}")
-                    print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
-                    self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
-                    self.is_waiting_response = True
-            else :        
-                reponse = self.modbus485.serial_read_data()
-                print(f"Response :{reponse}")
-                if reponse == 0:
-                    self.is_waiting_response = False
-                    self.state = self.State.MIXER2
-                    print(f"System in state : {self.state.name}")
+            # current = time.time()
+            # if not self.is_waiting_response:
+            #     if current - self.start_send > self.flow1:
+            #         print(f"delta = {current - self.start_send}")
+            #         print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
+            #         self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
+            #         self.is_waiting_response = True
+            # else :        
+            #     reponse = self.modbus485.serial_read_data()
+            #     print(f"Response :{reponse}")
+            #     if reponse == 0:
+            #         self.is_waiting_response = False
+            #         self.state = self.State.MIXER2
+            #         print(f"System in state : {self.state.name}")
                     
-                else:
-                    self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
+            #     else:
+            #         self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
+            self.timeout_callback_to_stop(self.flow1,relay_OFF[Relay.MIX1.value-1],self.State.MIXER2)
+            
                 
             
                 
@@ -145,23 +147,24 @@ class System:
             
             
         elif self.state == self.State.MIXER2_WATING:
-            current = time.time()
-            if not self.is_waiting_response:
-                if current - self.start_send > self.flow2:
-                    print(f"delta = {current - self.start_send}")
-                    print(f"Send: {relay_OFF[Relay.MIX2.value-1]}")
-                    self.modbus485.send_command(relay_OFF[Relay.MIX2.value-1])
-                    self.is_waiting_response = True
-            else :        
-                reponse = self.modbus485.serial_read_data()
-                print(f"Response :{reponse}")
-                if reponse == 0:
-                    self.is_waiting_response = False
-                    self.state = self.State.MIXER3
-                    print(f"System in state : {self.state.name}")
+            # current = time.time()
+            # if not self.is_waiting_response:
+            #     if current - self.start_send > self.flow2:
+            #         print(f"delta = {current - self.start_send}")
+            #         print(f"Send: {relay_OFF[Relay.MIX2.value-1]}")
+            #         self.modbus485.send_command(relay_OFF[Relay.MIX2.value-1])
+            #         self.is_waiting_response = True
+            # else :        
+            #     reponse = self.modbus485.serial_read_data()
+            #     print(f"Response :{reponse}")
+            #     if reponse == 0:
+            #         self.is_waiting_response = False
+            #         self.state = self.State.MIXER3
+            #         print(f"System in state : {self.state.name}")
                     
-                else:
-                    self.modbus485.send_command(relay_OFF[Relay.MIX2.value-1])
+            #     else:
+            #         self.modbus485.send_command(relay_OFF[Relay.MIX2.value-1])
+            self.timeout_callback_to_stop(self.flow2,relay_OFF[Relay.MIX2.value-1],self.State.MIXER3)
                     
         elif self.state == self.State.MIXER3:
             # response = my_rs485.setDevice(Relay.MIX3,ON)
@@ -186,41 +189,45 @@ class System:
             
             
         elif self.state == self.State.MIXER3_WATING:
-            current = time.time()
-            if not self.is_waiting_response:
-                if current - self.start_send > self.flow3:
-                    print(f"delta = {current - self.start_send}")
-                    print(f"Send: {relay_OFF[Relay.MIX3.value-1]}")
-                    self.modbus485.send_command(relay_OFF[Relay.MIX3.value-1])
-                    self.is_waiting_response = True
-            else :        
-                reponse = self.modbus485.serial_read_data()
-                print(f"Response :{reponse}")
-                if reponse == 0:
-                    self.is_waiting_response = False
-                    self.state = self.State.PUMP_IN
-                    print(f"System in state : {self.state.name}")
+            # current = time.time()
+            # if not self.is_waiting_response:
+            #     if current - self.start_send > self.flow3:
+            #         print(f"delta = {current - self.start_send}")
+            #         print(f"Send: {relay_OFF[Relay.MIX3.value-1]}")
+            #         self.modbus485.send_command(relay_OFF[Relay.MIX3.value-1])
+            #         self.is_waiting_response = True
+            # else :        
+            #     reponse = self.modbus485.serial_read_data()
+            #     print(f"Response :{reponse}")
+            #     if reponse == 0:
+            #         self.is_waiting_response = False
+            #         self.state = self.State.PUMP_IN
+            #         print(f"System in state : {self.state.name}")
                     
-                else:
-                    self.modbus485.send_command(relay_OFF[Relay.MIX3.value-1])
+            #     else:
+            #         self.modbus485.send_command(relay_OFF[Relay.MIX3.value-1])
+            self.timeout_callback_to_stop(self.flow3,relay_OFF[Relay.MIX3.value-1],self.State.PUMP_IN)
+            
         elif self.state == self.State.PUMP_IN:
             # self.state = self.State.SELECTOR1
-            if not self.is_waiting_response:
-                self.start_send = time.time()
-                print(f"Send: {relay_ON[Relay.PUMP_IN.value-1]}")
-                self.modbus485.send_command(relay_ON[Relay.PUMP_IN.value-1])
-                self.is_waiting_response = True
-            else:
-                reponse = self.modbus485.serial_read_data()
-                print(f"Response :{reponse}")
-                if reponse:
-                    self.is_waiting_response = False
-                    self.state = self.State.MIXER2_WATING
-                    print(f"System in state : {self.state.name}")
-                else:
-                    self.start_send = time.time()
-                    self.modbus485.send_command(relay_ON[Relay.PUMP_IN.value-1])
+            # if not self.is_waiting_response:
+            #     self.start_send = time.time()
+            #     print(f"Send: {relay_ON[Relay.PUMP_IN.value-1]}")
+            #     self.modbus485.send_command(relay_ON[Relay.PUMP_IN.value-1])
+            #     self.is_waiting_response = True
+            # else:
+            #     reponse = self.modbus485.serial_read_data()
+            #     print(f"Response :{reponse}")
+            #     if reponse:
+            #         self.is_waiting_response = False
+            #         self.state = self.State.MIXER2_WATING
+            #         print(f"System in state : {self.state.name}")
+            #     else:
+            #         self.start_send = time.time()
+            #         self.modbus485.send_command(relay_ON[Relay.PUMP_IN.value-1])
             # pass
+            # self.send_command_reliable()
+            pass
         
         elif self.state == self.State.SELECTOR1:
             self.state = self.State.SELECTOR2
@@ -239,7 +246,7 @@ class System:
         else:
             pass 
         
-    def send_command_reliable(self, command,nextstate):
+    def send_command_reliable(self, command,next_state):
         if not self.is_waiting_response:
             self.start_send = time.time()
             print(f"Send: {command}")
@@ -250,12 +257,32 @@ class System:
             print(f"Response :{reponse}")
             if reponse:
                 self.is_waiting_response = False
-                self.state = nextstate
-                print(f"System in state : {nextstate}")
+                self.state = next_state
+                print(f"System in state : {next_state}")
             else:
                 self.start_send = time.time()
                 self.modbus485.send_command(command)
-    
+                
+                
+    def timeout_callback_to_stop(self, flow, off_commamd, next_state):
+        current = time.time()
+        if not self.is_waiting_response:
+            if current - self.start_send > flow:
+                print(f"delta = {current - self.start_send}")
+                print(f"Send: {off_commamd}")
+                self.modbus485.send_command(off_commamd)
+                self.is_waiting_response = True
+        else :        
+            reponse = self.modbus485.serial_read_data()
+            print(f"Response :{reponse}")
+            if reponse == 0:
+                self.is_waiting_response = False
+                self.state = next_state
+                print(f"System in state : {next_state}")
+                
+            else:
+                self.modbus485.send_command(off_commamd)
+                
     def run(self):
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
         self.state = self.State.MIXER1
