@@ -101,8 +101,8 @@ class System:
         elif self.state == self.State.MIXER1_WATING:
             current = time.time()
             if not self.is_waiting_response:
-                print(f"delta = {current - self.start_send}")
                 if current - self.start_send > self.flow1:
+                    print(f"delta = {current - self.start_send}")
                     print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
                     self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
                     self.is_waiting_response = True
@@ -144,8 +144,8 @@ class System:
         elif self.state == self.State.MIXER2_WATING:
             current = time.time()
             if not self.is_waiting_response:
-                print(f"delta = {current - self.start_send}")
                 if current - self.start_send > self.flow2:
+                    print(f"delta = {current - self.start_send}")
                     print(f"Send: {relay_OFF[Relay.MIX2.value-1]}")
                     self.modbus485.send_command(relay_OFF[Relay.MIX2.value-1])
                     self.is_waiting_response = True
@@ -183,8 +183,8 @@ class System:
         elif self.state == self.State.MIXER3_WATING:
             current = time.time()
             if not self.is_waiting_response:
-                print(f"delta = {current - self.start_send}")
                 if current - self.start_send > self.flow3:
+                    print(f"delta = {current - self.start_send}")
                     print(f"Send: {relay_OFF[Relay.MIX3.value-1]}")
                     self.modbus485.send_command(relay_OFF[Relay.MIX3.value-1])
                     self.is_waiting_response = True
