@@ -68,6 +68,7 @@ class System:
         pass
     
     def finite_state_machine(self):
+        print(f"System in state : {self.state.name}")
         if self.state == self.State.INIT:
             print("System Initial...")
             self.state = self.State.IDLE
