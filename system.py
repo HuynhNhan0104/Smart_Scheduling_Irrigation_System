@@ -152,7 +152,9 @@ class System:
         
     def run(self):
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
-        self.state = self.State.MIXER1
+        self.state = self.State.MIXER1_WATING
+        self.flow1 = 5
+        self.start_send = time.time()
         while True:
             self.scheduler.SCH_Update()                                                                                                        
             self.scheduler.SCH_Dispatch_Tasks()
