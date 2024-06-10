@@ -84,18 +84,35 @@ class System:
             # sending command an check response
             if not self.is_waiting:
                 self.start_send = time.time()
+                print(f"Send: {relay_ON[Relay.MIX1.value-1]}")
                 self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
                 self.is_waiting = True
             else:
                 reponse = self.modbus485.serial_read_data()
                 print(f"Response :{reponse}")
                 if reponse:
+                    self.is_waiting = False
                     self.state = self.State.MIXER1_WATING
                 else:
                     self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
                     
         elif self.state == self.State.MIXER1_WATING:
-            pass
+            current = time.time()
+            if current - self.start_send > self.flow1:
+                print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
+                self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
+                self.is_waiting = True
+            
+            if self.is_waiting:
+                reponse = self.modbus485.serial_read_data()
+                print(f"Response :{reponse}")
+                if reponse == 0:
+                    self.is_waiting = False
+                    self.state = self.State.MIXER2_WATING
+                else:
+                    self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
+                
+            
         elif self.state == self.State.MIXER2:
             # response = my_rs485.setDevice(Relay.MIX2,ON)
             self.state = self.State.MIXER2_WATING
