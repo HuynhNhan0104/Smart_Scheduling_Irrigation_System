@@ -116,11 +116,11 @@ class ActivityManager:
         if len(self.activitiy_list) > 0:
             self.current_activity = self.activitiy_list[0]
             current_time = time.time()
-            print("current activity")
-            print(self.current_activity.to_string())
-            print(f"current time: {current_time}")
-            print(f"start time: {self.current_activity.start_time}")
-            print(f"stop time: {self.current_activity.stop_time}")
+            # print("current activity")
+            # print(self.current_activity.to_string())
+            # print(f"current time: {current_time}")
+            # print(f"start time: {self.current_activity.start_time}")
+            # print(f"stop time: {self.current_activity.stop_time}")
             
             # check thời gian
             if self.current_activity.state == Activity.State.READY:
