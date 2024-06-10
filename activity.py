@@ -129,13 +129,13 @@ class ActivityManager:
                     print(f"{self.current_activity.name} xoa khoi list vi co loi phat sinh")
                     self.remove_activity(self.current_activity)
                     
-                if current_time < self.current_activity.start_time:
+                elif current_time < self.current_activity.start_time:
                     delta_time = self.current_activity.start_time - current_time
                     if delta_time <= 60:
                         print(f"{self.current_activity.name} se duoc tien hanh sau {delta_time} s")
                         
                     
-                if current_time >= self.current_activity.start_time:
+                elif current_time >= self.current_activity.start_time:
                     print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
                     
                     self.current_activity.state = Activity.State.RUNNING
