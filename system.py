@@ -70,7 +70,18 @@ class System:
         
         pass
     
-    def send_command_reliable(self, command,next_state):
+    def send_command_reliable(self, command, expected_value):
+            # self.start_send = time.time()
+            self.modbus485.send_command(command)
+            reponse = None
+            while reponse := self.modbus485.serial_read_data():
+                if reponse == expected_value:
+                    return
+                self.modbus485.send_command(command)
+                
+                
+                
+    def send_command_reliable_and_to_next_state(self, command,next_state):
         if not self.is_waiting_response:
             self.start_send = time.time()
             print(f"Send: {command}")
@@ -106,9 +117,6 @@ class System:
             else:
                 self.modbus485.send_command(off_commamd)
                 
-                
-                
-    
     def finite_state_machine(self):
         if self.state == self.State.INIT:
             print("System Initial...")
@@ -119,81 +127,67 @@ class System:
                 self.state = self.State.MIXER1 
             
         elif self.state == self.State.MIXER1:
-            self.send_command_reliable(relay_ON[Relay.MIX1.value-1], self.State.MIXER1_WATING)
+            self.send_command_reliable_and_to_next_state(relay_ON[Relay.MIX1.value-1], self.State.MIXER1_WATING)
                     
         elif self.state == self.State.MIXER1_WATING:
             self.timeout_callback_to_stop(self.flow1,relay_OFF[Relay.MIX1.value-1],self.State.MIXER2)
             
         elif self.state == self.State.MIXER2:
-            self.send_command_reliable(relay_ON[Relay.MIX2.value-1], self.State.MIXER2_WATING)
+            self.send_command_reliable_and_to_next_state(relay_ON[Relay.MIX2.value-1], self.State.MIXER2_WATING)
             
         elif self.state == self.State.MIXER2_WATING:
             self.timeout_callback_to_stop(self.flow2,relay_OFF[Relay.MIX2.value-1],self.State.MIXER3)
                     
         elif self.state == self.State.MIXER3:
-            self.send_command_reliable(relay_ON[Relay.MIX3.value-1], self.State.MIXER3_WATING)
+            self.send_command_reliable_and_to_next_state(relay_ON[Relay.MIX3.value-1], self.State.MIXER3_WATING)
             
         elif self.state == self.State.MIXER3_WATING:
             self.timeout_callback_to_stop(self.flow3,relay_OFF[Relay.MIX3.value-1],self.State.PUMP_IN)
             
         elif self.state == self.State.PUMP_IN:
-            # self.state = self.State.SELECTOR1
-            # if not self.is_waiting_response:
-            #     self.start_send = time.time()
-            #     print(f"Send: {relay_ON[Relay.PUMP_IN.value-1]}")
-            #     self.modbus485.send_command(relay_ON[Relay.PUMP_IN.value-1])
-            #     self.is_waiting_response = True
-            # else:
-            #     reponse = self.modbus485.serial_read_data()
-            #     print(f"Response :{reponse}")
-            #     if reponse:
-            #         self.is_waiting_response = False
-            #         self.state = self.State.MIXER2_WATING
-            #         print(f"System in state : {self.state.name}")
-            #     else:
-            #         self.start_send = time.time()
-            #         self.modbus485.send_command(relay_ON[Relay.PUMP_IN.value-1])
-            # pass
-            # self.send_command_reliable()
-            # pass
-            self.send_command_reliable(relay_ON[Relay.PUMP_IN.value-1],self.State.PUMP_IN_WAITING)
+            self.send_command_reliable_and_to_next_state(relay_ON[Relay.PUMP_IN.value-1],self.State.PUMP_IN_WAITING)
+            
         elif self.state == self.State.PUMP_IN_WAITING:
-            self.timeout_callback_to_stop(10,relay_OFF[Relay.PUMP_IN.value-1], self.State.SELECTOR1)
+            self.timeout_callback_to_stop(self.pump_in,relay_OFF[Relay.PUMP_IN.value-1], self.State.SELECTOR1)
             
         elif self.state == self.State.SELECTOR1:
             if self.area_selector1:
-                self.send_command_reliable(relay_ON[Relay.AREA1.value-1],self.State.SELECTOR2)
+                self.send_command_reliable_and_to_next_state(relay_ON[Relay.AREA1.value-1],self.State.SELECTOR2)
             else:
                 self.state =self.State.SELECTOR2
         
         elif self.state == self.State.SELECTOR2:
             if self.area_selector2:
-                self.send_command_reliable(relay_ON[Relay.AREA3.value-1],self.State.SELECTOR3)
+                self.send_command_reliable_and_to_next_state(relay_ON[Relay.AREA3.value-1],self.State.SELECTOR3)
             else:
                 self.state =self.State.SELECTOR3
         
         elif self.state == self.State.SELECTOR3:
             if self.area_selector3:
-                self.send_command_reliable(relay_ON[Relay.AREA3.value-1],self.State.PUMP_OUT)
+                self.send_command_reliable_and_to_next_state(relay_ON[Relay.AREA3.value-1],self.State.PUMP_OUT)
             else:
                 self.state =self.State.PUMP_OUT
                 
         elif self.state == self.State.PUMP_OUT:
-            self.send_command_reliable(relay_ON[Relay.PUMP_OUT.value-1],self.State.PUMP_OUT_WAITING)
+            self.send_command_reliable_and_to_next_state(relay_ON[Relay.PUMP_OUT.value-1],self.State.PUMP_OUT_WAITING)
             
         elif self.state == self.State.PUMP_OUT_WAITING:
-            self.timeout_callback_to_stop(10,relay_OFF[Relay.PUMP_IN.value-1],self.State.NEXT_CYCLE_WAITING)
+            self.timeout_callback_to_stop(self.pump_out, relay_OFF[Relay.PUMP_IN.value-1],self.State.NEXT_CYCLE_WAITING)
         elif self.state == self.State.NEXT_CYCLE_WAITING:
+            print("TURN OFF AREA ", Relay.AREA1.value)
+            self.send_command_reliable(relay_OFF[Relay.AREA1.value-1],0)
+            print("TURN OFF AREA ", Relay.AREA2.value)
+            self.send_command_reliable(relay_OFF[Relay.AREA2.value-1],0)
+            print("TURN OFF AREA ", Relay.AREA3.value)
+            self.send_command_reliable(relay_OFF[Relay.AREA3.value-1],0)
+            
             if self.cycle > 0:
                 self.state = self.State.MIXER1
                 self.cycle -= 1
-            else:
-                # self.timeout_callback_to_stop(0,relay_OFF[Relay.PUMP_IN.value-1])
-                # self.send_command_reliable()
-                
-                
-                # turn of areas:
+            else:                
                 self.state = self.State.IDLE
+                print(f"System in state : {self.state}")
+                
         else:
             print(f"SYSTEM IN ERROR: {self.state}")
         
@@ -205,6 +199,8 @@ class System:
         self.flow1 = 5
         self.flow2 = 5
         self.flow3 = 5
+        self.pump_in = 5
+        self.pump_out = 5
         self.area_selector1 = 1
         self.area_selector2 = 1
         self.area_selector3 = 1
