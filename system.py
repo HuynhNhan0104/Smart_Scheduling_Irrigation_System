@@ -100,6 +100,7 @@ class System:
                     
         elif self.state == self.State.MIXER1_WATING:
             current = time.time()
+            print(f"delta = {current - self.start_send}")
             if current - self.start_send > self.flow1:
                 print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
                 self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
