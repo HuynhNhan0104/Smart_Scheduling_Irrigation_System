@@ -163,8 +163,8 @@ class TaskManagament:
 def Say_hello():
     print("-----------------System Starting----------------")
 
-my_scheduler = TaskManagament()
-my_scheduler.run()
+# my_scheduler = TaskManagament()
+# my_scheduler.run()
 
 
 
