@@ -44,7 +44,7 @@ class System:
         
     state = State.INIT
     trigger = False
-    is_waiting= False
+    is_waiting_response= False
     
     
     modbus485 = Modbus485()
@@ -81,16 +81,16 @@ class System:
             
         elif self.state == self.State.MIXER1:
             # sending command an check response
-            if not self.is_waiting:
+            if not self.is_waiting_response:
                 self.start_send = time.time()
                 print(f"Send: {relay_ON[Relay.MIX1.value-1]}")
                 self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
-                self.is_waiting = True
+                self.is_waiting_response = True
             else:
                 reponse = self.modbus485.serial_read_data()
                 print(f"Response :{reponse}")
                 if reponse:
-                    self.is_waiting = False
+                    self.is_waiting_response = False
                     self.state = self.State.MIXER1_WATING
                     print(f"System in state : {self.state.name}")
                     
@@ -100,22 +100,24 @@ class System:
                     
         elif self.state == self.State.MIXER1_WATING:
             current = time.time()
-            print(f"delta = {current - self.start_send}")
-            if current - self.start_send > self.flow1:
-                print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
-                self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
-                self.is_waiting = True
-            
-            if self.is_waiting:
+            if not self.is_waiting_response:
+                print(f"delta = {current - self.start_send}")
+                if current - self.start_send > self.flow1:
+                    print(f"Send: {relay_OFF[Relay.MIX1.value-1]}")
+                    self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
+                    self.is_waiting_response = True
+            else :        
                 reponse = self.modbus485.serial_read_data()
                 print(f"Response :{reponse}")
                 if reponse == 0:
-                    self.is_waiting = False
+                    self.is_waiting_response = False
                     self.state = self.State.MIXER2
                     print(f"System in state : {self.state.name}")
                     
                 else:
                     self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
+                
+            
                 
             
         elif self.state == self.State.MIXER2:
