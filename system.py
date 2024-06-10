@@ -82,12 +82,12 @@ class System:
         # print(acitivity.to_string())
         if acitivity:
             kwargs = {
-                "flow1 ": acitivity.get("flow1"),
-                "flow2 ": acitivity.get("flow2"),
-                "flow3 ": acitivity.get("flow3"),
-                "selector1 ": acitivity.get("selector1"),
-                "selector2 ": acitivity.get("selector2"),
-                "selector3 ": acitivity.get("selector3"),
+                "flow1": acitivity.get("flow1"),
+                "flow2": acitivity.get("flow2"),
+                "flow3": acitivity.get("flow3"),
+                "selector1": acitivity.get("selector1"),
+                "selector2": acitivity.get("selector2"),
+                "selector3": acitivity.get("selector3"),
                 "pump_in": acitivity.get("pump_in"),
                 "pump_out": acitivity.get("pump_out"),
                 "cycle": acitivity.get("cycle")
