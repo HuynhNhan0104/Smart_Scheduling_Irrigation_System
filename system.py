@@ -101,7 +101,7 @@ class System:
         
     def set_config(self,flow1: int, flow2: int, flow3: int, 
                    selector1: int, selector2: int, selector3: int, 
-                   cycle:int, pump_in:int, punp_out:int):
+                   cycle:int, pump_in:int, pump_out:int):
         self.flow1 = flow1
         self.flow2 = flow2
         self.flow3 = flow3
@@ -109,7 +109,7 @@ class System:
         self.area_selector2 = selector2
         self.area_selector3 = selector3
         self.pump_in = pump_in
-        self.pump_out = punp_out
+        self.pump_out = pump_out
         self.cycle = cycle
         
         
@@ -252,8 +252,8 @@ class System:
                 "name": "lich tuoi 2",
                 "is_active": True,
                 # "state": Activity.State.READY.name,
-                "start_time": "20:39:00 10-06-2024",
-                "stop_time": "20:41:00 10-06-2024",
+                "start_time": "20:41:00 10-06-2024",
+                "stop_time": "20:43:00 10-06-2024",
                 "flow1": 5,
                 "flow2": 5,
                 "flow3": 5,
