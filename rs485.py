@@ -61,6 +61,8 @@ class Modbus485:
 
     # relay1_ON  = [0, 6, 0, 0, 0, 255, 200, 91]
     # relay1_OFF = [0, 6, 0, 0, 0, 0, 136, 27]
+    def send_command(self, command):
+        self.ser.write(command)
 
     def setDevice(self,id, state):
         if state == True:
@@ -71,9 +73,10 @@ class Modbus485:
             print(f"Device {id} is turn OFF")
             # print(f"command is :{ relay_OFF[id-1]}")
             self.ser.write(relay_OFF[id-1])
-        time.sleep(1)
+        time.sleep(0.05)
         response = self.serial_read_data()
         print(f"Get reponse: {response}")
+        return response
         
     def serial_read_data(self):
         bytesToRead = self.ser.inWaiting()
@@ -86,15 +89,15 @@ class Modbus485:
                 value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
                 return value
             else:
-                return "Wrong size"
-        return "No Data"
+                return None
+        return None
 
     # soil_temperature =[1, 3, 0, 6, 0, 1, 100, 11]
     def readTemperature(self):
         print("reading temperature soil")
         self.serial_read_data()
         self.ser.write(soil_temperature)
-        time.sleep(1)
+        time.sleep(0.05)
         return self.serial_read_data()
 
     # soil_moisture = [1, 3, 0, 7, 0, 1, 53, 203]
@@ -102,7 +105,7 @@ class Modbus485:
         print("reading moisture")
         self.serial_read_data()
         self.ser.write(soil_humidity)
-        time.sleep(1)
+        time.sleep(0.05)
         return self.serial_read_data()
 
 
@@ -115,7 +118,7 @@ class Modbus485:
             self.ser.write(distance1_ON)
         if index == 2:
             self.ser.write(distance2_ON)
-        time.sleep(1)
+        time.sleep(0.05)
         return self.serial_read_data()
     
 my_rs485 = Modbus485()
