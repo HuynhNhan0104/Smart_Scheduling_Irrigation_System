@@ -131,13 +131,14 @@ class ActivityManager:
                     
                 elif current_time < self.current_activity.start_time:
                     delta_time = self.current_activity.start_time - current_time
-                    if delta_time <= 60:
-                        print(f"{self.current_activity.name} se duoc tien hanh sau {delta_time} s")
+                    # if delta_time <= 60:
+                    #     print(f"{self.current_activity.name} se duoc tien hanh sau {delta_time} s")
                         
                     
                 elif current_time >= self.current_activity.start_time:
-                    print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
                     self.current_activity.state = Activity.State.RUNNING
+                    print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
+                    
             elif self.current_activity.state == Activity.State.RUNNING:
                 if current_time < self.current_activity.stop_time:
                     # RUNNING OPERATION HERE

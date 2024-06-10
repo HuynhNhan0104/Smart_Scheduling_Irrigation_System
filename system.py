@@ -77,6 +77,7 @@ class System:
         
     
     def trigger_action(self):
+        print("GET IN HERE")
         acitivity = self.activity_manager.get_current_activity_json()
         print(acitivity.to_string())
         if acitivity:
