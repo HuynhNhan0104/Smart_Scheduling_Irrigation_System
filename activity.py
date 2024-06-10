@@ -119,6 +119,9 @@ class ActivityManager:
             print("current activity")
             print(self.current_activity.to_string())
             print(f"current time: {current_time}")
+            print(f"start time: {self.current_activity.start_time}")
+            print(f"stop time: {self.current_activity.stop_time}")
+            
             # check thời gian
             if self.current_activity.state == Activity.State.READY:
                 #  Thong bao sap dien ra hoat dong tuoi
