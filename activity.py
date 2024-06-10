@@ -54,7 +54,7 @@ class Activity:
             "is_active": self.is_active,
             "state": self.state.name,
             "start_time": datetime.datetime.fromtimestamp(self.start_time).strftime(datetime_format),
-            "stop_time ": datetime.datetime.fromtimestamp(self.stop_time_time).strftime(datetime_format),
+            "stop_time ": datetime.datetime.fromtimestamp(self.stop_time).strftime(datetime_format),
             "flow1 ": self. flow1,
             "flow2 ": self.flow2,
             "flow3 ": self.flow3,
