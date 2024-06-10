@@ -137,14 +137,8 @@ class ActivityManager:
                     
                 elif current_time >= self.current_activity.start_time:
                     print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
-                    
                     self.current_activity.state = Activity.State.RUNNING
-                
-                    
             elif self.current_activity.state == Activity.State.RUNNING:
-                
-                
-                
                 if current_time < self.current_activity.stop_time:
                     # RUNNING OPERATION HERE
                     self.p_trigger_func()

@@ -265,16 +265,16 @@ class System:
         self.activity_manager.add_activity(act2)
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
         self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
-        self.state = self.State.MIXER1
-        self.flow1 = 5
-        self.flow2 = 5
-        self.flow3 = 5
-        self.pump_in = 5
-        self.pump_out = 5
-        self.area_selector1 = 1
-        self.area_selector2 = 1
-        self.area_selector3 = 1
-        self.cycle = 3
+        # self.state = self.State.MIXER1
+        # self.flow1 = 3
+        # self.flow2 = 3
+        # self.flow3 = 3
+        # self.pump_in = 3
+        # self.pump_out = 3
+        # self.area_selector1 = 1
+        # self.area_selector2 = 1
+        # self.area_selector3 = 1
+        # self.cycle = 3
         
         # self.start_send = time.time()
         while True:
