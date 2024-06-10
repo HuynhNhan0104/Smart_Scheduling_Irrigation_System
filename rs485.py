@@ -121,7 +121,7 @@ class Modbus485:
         time.sleep(0.05)
         return self.serial_read_data()
     
-my_rs485 = Modbus485()
+# my_rs485 = Modbus485()
 # while True:
 #     for idx in range(0,7):
 #         my_rs485.setDevice(idx+1,True)
@@ -131,13 +131,13 @@ my_rs485 = Modbus485()
     # for idx, relay in enumerate(relay_ON):
         
 
-while True:
-    print("TEST SENSOR")
-    print(my_rs485.readMoisture())
-    time.sleep(1)
-    print(my_rs485.readTemperature())
-    time.sleep(1)
-    print(my_rs485.readDistance(1))
-    time.sleep(1)
-    print(my_rs485.readDistance(2))
-    time.sleep(1)
+# while True:
+#     print("TEST SENSOR")
+#     print(my_rs485.readMoisture())
+#     time.sleep(1)
+#     print(my_rs485.readTemperature())
+#     time.sleep(1)
+#     print(my_rs485.readDistance(1))
+#     time.sleep(1)
+#     print(my_rs485.readDistance(2))
+#     time.sleep(1)
