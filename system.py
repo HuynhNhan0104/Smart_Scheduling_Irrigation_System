@@ -68,7 +68,6 @@ class System:
         pass
     
     def finite_state_machine(self):
-        print(f"System in state : {self.state.name}")
         if self.state == self.State.INIT:
             print("System Initial...")
             self.state = self.State.IDLE
@@ -93,6 +92,8 @@ class System:
                 if reponse:
                     self.is_waiting = False
                     self.state = self.State.MIXER1_WATING
+                    print(f"System in state : {self.state.name}")
+                    
                 else:
                     self.start_send = time.time()
                     self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
@@ -110,6 +111,8 @@ class System:
                 if reponse == 0:
                     self.is_waiting = False
                     self.state = self.State.MIXER2
+                    print(f"System in state : {self.state.name}")
+                    
                 else:
                     self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
                 
