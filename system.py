@@ -3,6 +3,7 @@ from mqtt import *
 from utils import *
 from rs485 import *
 from mqtt import *
+from activity import *
 import datetime
 from enum import Enum
 
@@ -26,24 +27,26 @@ class System:
     class State(Enum):
         INIT = 0
         IDLE = 1
-        MIXER1 = 2
-        MIXER1_WATING = 3
+        MIXER1 = 2              #<----- Starting
+        MIXER1_WATING = 3       #<----- Running
         
-        MIXER2 = 4
-        MIXER2_WATING = 5
+        MIXER2 = 4              #<----- Starting
+        MIXER2_WATING = 5       #<----- Running
         
-        MIXER3 = 6
-        MIXER3_WATING = 7
+        MIXER3 = 6              #<----- Starting
+        MIXER3_WATING = 7       #<----- Running
         
-        PUMP_IN = 8
-        PUMP_IN_WAITING = 9
+        PUMP_IN = 8             #<----- Starting
+        PUMP_IN_WAITING = 9     #<----- Running
         
-        SELECTOR1  = 10
-        SELECTOR2  = 11
-        SELECTOR3  = 12
-        PUMP_OUT = 13
-        PUMP_OUT_WAITING = 14
-        NEXT_CYCLE_WAITING = 15
+        SELECTOR1  = 10         #<----- Starting
+        SELECTOR2  = 11         #<----- Starting
+        SELECTOR3  = 12         #<----- Starting
+        
+        PUMP_OUT = 13           #<----- Starting
+        PUMP_OUT_WAITING = 14   #<----- Running
+        
+        NEXT_CYCLE_WAITING = 15 #<----- Starting
         
     state = State.INIT
     trigger = False
@@ -53,6 +56,7 @@ class System:
     modbus485 = Modbus485()
     # mqtt_handler = MQTTHelper()
     scheduler = Scheduler()
+    activity_manager = ActivityManager()
     
     flow1 = 20
     flow2 = 20
@@ -67,7 +71,53 @@ class System:
     start_send = time.time()
     
     def __init__(self) -> None:
+        self.activity_manager.set_trigger_func(self.trigger_action)
+        self.activity_manager.set_stop_func(self.stop_action)
+        # self.mqtt_handler.setRecvCallBack(self.receive_message)
         
+    
+    def trigger_action(self):
+        acitivity = self.activity_manager.get_current_activity_json()
+        print(acitivity.to_string())
+        if acitivity:
+            kwargs = {
+                "flow1 ": acitivity.get("flow1"),
+                "flow2 ": acitivity.get("flow2"),
+                "flow3 ": acitivity.get("flow3"),
+                "selector1 ": acitivity.get("selector1"),
+                "selector2 ": acitivity.get("selector2"),
+                "selector3 ": acitivity.get("selector3"),
+                "pump_in": acitivity.get("pump_in"),
+                "pump_out": acitivity.get("pump_out"),
+                "cycle": acitivity.get("cycle")
+            }
+            self.set_config(**kwargs)
+        self.state = self.State.IDLE
+        self.trigger = True
+        
+            
+        
+        
+    def set_config(self,flow1: int, flow2: int, flow3: int, 
+                   selector1: int, selector2: int, selector3: int, 
+                   cycle:int, punp_in:int, punp_out:int):
+        self.flow1 = flow1
+        self.flow2 = flow2
+        self.flow3 = flow3
+        self.area_selector1 = selector1
+        self.area_selector2 = selector2
+        self.area_selector3 = selector3
+        self.pump_in = punp_in
+        self.pump_out = punp_out
+        self.cycle = cycle
+        
+        
+        
+    
+    def stop_action(self):
+        pass
+    
+    def receive_message(self,payload):
         pass
     
     def send_command_reliable(self, command, expected_value):
@@ -121,11 +171,10 @@ class System:
         if self.state == self.State.INIT:
             print("System Initial...")
             self.state = self.State.IDLE
-            
         elif self.state == self.State.IDLE:
             if self.trigger:
                 self.state = self.State.MIXER1 
-            
+                
         elif self.state == self.State.MIXER1:
             self.send_command_reliable_and_to_next_state(relay_ON[Relay.MIX1.value-1], self.State.MIXER1_WATING)
                     
@@ -173,6 +222,7 @@ class System:
             
         elif self.state == self.State.PUMP_OUT_WAITING:
             self.timeout_callback_to_stop(self.pump_out, relay_OFF[Relay.PUMP_IN.value-1],self.State.NEXT_CYCLE_WAITING)
+            
         elif self.state == self.State.NEXT_CYCLE_WAITING:
             print("TURN OFF AREA ", Relay.AREA1.value)
             self.send_command_reliable(relay_OFF[Relay.AREA1.value-1],0)
@@ -194,7 +244,27 @@ class System:
 
                 
     def run(self):
+        act2 = {
+                # "id": -1,
+                "name": "lich tuoi 2",
+                "is_active": True,
+                # "state": Activity.State.READY.name,
+                "start_time": "11:04:00 10-06-2024",
+                "stop_time": "11:05:00 10-06-2024",
+                "flow1": 5,
+                "flow2": 5,
+                "flow3": 5,
+                "selector1": 1,
+                "selector2": 1,
+                "selector3": 1,
+                "pump_in":5,
+                "pump_out":5,
+                "cycle": 1
+        }
+        act2 = Activity(**act2)
+        self.activity_manager.add_activity(act2)
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
+        self.scheduler.SCH_Add_Task(self.activity_manager.remove_activity,0,10)
         self.state = self.State.MIXER1
         self.flow1 = 5
         self.flow2 = 5
@@ -210,6 +280,7 @@ class System:
         while True:
             self.scheduler.SCH_Update()                                                                                                        
             self.scheduler.SCH_Dispatch_Tasks()
+            
                                                                                                            
             time.sleep(TICK_CYCLE/1000)
             

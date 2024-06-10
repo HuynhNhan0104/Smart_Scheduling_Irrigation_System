@@ -11,18 +11,25 @@ class Activity:
         READY = 1
         RUNNING = 2
         FINISH = 3
-    def __init__(self, name: str, start_time:str, stop_time: str, flow1: int, flow2: int, flow3: int, selector: int, cycle:int, is_active: int = 1):
+    def __init__(self, name: str, start_time:str, stop_time: str, flow1: int, flow2: int, flow3: int, 
+                selector1: int, selector2: int, selector3: int, 
+                pump_in:int, pump_out:int, cycle:int, is_active: int = 1):
         self.name = name
         self.start_time = int(datetime.datetime.strptime(start_time,datetime_format).timestamp())
         self.stop_time = int(datetime.datetime.strptime(stop_time,datetime_format).timestamp() )
         self.flow1 = flow1 
         self.flow2 = flow2 
         self.flow3 = flow3 
-        self.selector = selector
+        self.selector1 = selector1
+        self.selector2 = selector2
+        self.selector3 = selector3
+        self.pump_in = pump_in
+        self.pump_out = pump_out
         self.cycle = cycle
         self.is_active = is_active
         self.state = self.State.READY
         self.id = -1
+        
     def create_from_json(self,json_object):
         self.name = json_object.name
         self.start_time = int(datetime.datetime.strptime(json_object.start_time,datetime_format).timestamp())
@@ -30,7 +37,11 @@ class Activity:
         self.flow1 = json_object.flow1 
         self.flow2 = json_object.flow2 
         self.flow3 = json_object.flow3 
-        self.selector = json_object.selector
+        self.selector1 = json_object.selector1
+        self.selector2 = json_object.selector2 
+        self.selector3 = json_object.selector3
+        self.pump_in = json_object.pump_in
+        self.pump_out = json_object.pump_out
         self.cycle = json_object.cycle
         self.is_active = json_object.is_active
         self.state = self.State.READY
@@ -42,13 +53,17 @@ class Activity:
             "name": self.name,
             "is_active": self.is_active,
             "state": self.state.name,
-            "cycle": self.cycle,
             "start_time": datetime.fromtimestamp(self.start_time).strftime(datetime_format),
             "stop_time ": datetime.fromtimestamp(self.stop_time_time).strftime(datetime_format),
             "flow1 ": self. flow1,
             "flow2 ": self.flow2,
             "flow3 ": self.flow3,
-            "selector ": self.selector,
+            "selector1 ": self.selector1,
+            "selector2 ": self.selector2,
+            "selector3 ": self.selector3,
+            "pump_in": self.pump_in,
+            "pump_out": self.pump_out,
+            "cycle": self.cycle
         }
     def to_string(self):
         return json.dumps(self.to_json(),indent=4)
@@ -57,7 +72,19 @@ class ActivityManager:
     def __init__(self):
         self.activitiy_list = []
         self.current_id = 0
+        self.current_activity = None 
+        self.p_trigger_func = None
+        self.p_stop_func = None
+    
+    def set_trigger_func(self,func):
+        self.p_trigger_func = func
+        
+    def set_stop_func(self,func):
+        self.p_trigger_func = func
         # self.current_activity
+    def get_current_activity_json(self):
+        return self.activitiy_list[0].to_json() if len(self.activitiy_list) > 0 else None
+    
     def generate_id(self):
         new_id = self.current_id
         self.current_id += 1
@@ -85,52 +112,54 @@ class ActivityManager:
         else:
             print("Activities List is empty")
         
-    def run_activity(self,scheduler=None):
+    def run_activity(self):
         if len(self.activitiy_list) > 0:
-            current_activity = self.activitiy_list[0]
+            self.current_activity = self.activitiy_list[0]
             current_time = time.time()
             
             # check thời gian
-            if current_activity.state == Activity.State.READY:
+            if self.current_activity.state == Activity.State.READY:
                 #  Thong bao sap dien ra hoat dong tuoi
-                if current_time > current_activity.stop_time:
-                    print(f"{current_activity.name} xoa khoi list vi co loi phat sinh")
-                    self.remove_activity(current_activity)
+                if current_time > self.current_activity.stop_time:
+                    print(f"{self.current_activity.name} xoa khoi list vi co loi phat sinh")
+                    self.remove_activity(self.current_activity)
                     
-                if current_time < current_activity.start_time:
-                    delta_time = current_activity.start_time - current_time
+                if current_time < self.current_activity.start_time:
+                    delta_time = self.current_activity.start_time - current_time
                     if delta_time <= 60:
-                        print(f"{current_activity.name} se duoc tien hanh sau {delta_time} s")
+                        print(f"{self.current_activity.name} se duoc tien hanh sau {delta_time} s")
                         
                     
-                if current_time >= current_activity.start_time:
-                    print(f"{current_activity.name} dang duoc tien hanh thuc hien")
+                if current_time >= self.current_activity.start_time:
+                    print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
                     
-                    current_activity.state = Activity.State.RUNNING
+                    self.current_activity.state = Activity.State.RUNNING
                 
                     
-            elif current_activity.state == Activity.State.RUNNING:
+            elif self.current_activity.state == Activity.State.RUNNING:
                 
                 
                 
-                if current_time < current_activity.stop_time:
+                if current_time < self.current_activity.stop_time:
                     # RUNNING OPERATION HERE
+                    self.p_trigger_func()
                     # 
-                    delta_time = current_activity.stop_time - current_time
+                    delta_time = self.current_activity.stop_time - current_time
                     if delta_time <= 60:
-                        print(f"{current_activity.name} se duoc ket thuc sau {delta_time} s")
+                        print(f"{self.current_activity.name} se duoc ket thuc sau {delta_time} s")
                         
-                if current_time >= current_activity.stop_time:
-                    current_activity.state = Activity.State.FINISH
+                if current_time >= self.current_activity.stop_time:
+                    self.current_activity.state = Activity.State.FINISH
                     
-                    print(f"{current_activity.name}  kết thúc")
+                    print(f"{self.current_activity.name}  kết thúc")
                     
                     
-            elif current_activity.state == Activity.State.FINISH:
-                self.remove_activity(current_activity)
+            elif self.current_activity.state == Activity.State.FINISH:
+                self.remove_activity(self.current_activity)
                 # trigger action to stop
+                self.p_stop_func()
                 
-            elif current_activity.state == Activity.State.NOT_ACTIVE:
+            elif self.current_activity.state == Activity.State.NOT_ACTIVE:
                 pass
 
 
