@@ -73,6 +73,7 @@ class ActivityManager:
         self.activitiy_list = []
         self.current_id = 0
         self.current_activity = None 
+        self.is_running = False
         self.p_trigger_func = None
         self.p_stop_func = None
     
@@ -80,7 +81,7 @@ class ActivityManager:
         self.p_trigger_func = func
         
     def set_stop_func(self,func):
-        self.p_trigger_func = func
+        self.p_stop_func = func
         # self.current_activity
     def get_current_activity_json(self):
         return self.activitiy_list[0].to_json() if len(self.activitiy_list) > 0 else None
@@ -137,6 +138,7 @@ class ActivityManager:
                     
                 elif current_time >= self.current_activity.start_time:
                     self.current_activity.state = Activity.State.RUNNING
+                    self.is_running = True
                     print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
                     
             elif self.current_activity.state == Activity.State.RUNNING:
