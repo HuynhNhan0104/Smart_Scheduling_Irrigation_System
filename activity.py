@@ -145,8 +145,8 @@ class ActivityManager:
                     self.p_trigger_func()
                     # 
                     delta_time = self.current_activity.stop_time - current_time
-                    if delta_time <= 60:
-                        print(f"{self.current_activity.name} se duoc ket thuc sau {delta_time} s")
+                    # if delta_time <= 60:
+                    #     print(f"{self.current_activity.name} se duoc ket thuc sau {delta_time} s")
                         
                 if current_time >= self.current_activity.stop_time:
                     self.current_activity.state = Activity.State.FINISH
