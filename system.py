@@ -114,7 +114,7 @@ class System:
                     print(f"System in state : {self.state.name}")
                     
                 else:
-                    self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
+                    self.modbus485.send_command(relay_OFF[Relay.MIX1.value-1])
                 
             
         elif self.state == self.State.MIXER2:
