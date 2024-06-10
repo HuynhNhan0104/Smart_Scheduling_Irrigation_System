@@ -79,7 +79,7 @@ class System:
     def trigger_action(self):
         print("GET IN HERE")
         acitivity = self.activity_manager.get_current_activity_json()
-        # print(acitivity.to_string())
+        print(json.dumps(acitivity,indent=4))
         if acitivity:
             kwargs = {
                 "flow1": acitivity.get("flow1"),
@@ -252,8 +252,8 @@ class System:
                 "name": "lich tuoi 2",
                 "is_active": True,
                 # "state": Activity.State.READY.name,
-                "start_time": "20:41:00 10-06-2024",
-                "stop_time": "20:43:00 10-06-2024",
+                "start_time": "20:45:00 10-06-2024",
+                "stop_time": "20:47:00 10-06-2024",
                 "flow1": 5,
                 "flow2": 5,
                 "flow3": 5,
