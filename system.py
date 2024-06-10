@@ -207,7 +207,7 @@ class System:
         
         elif self.state == self.State.SELECTOR2:
             if self.area_selector2:
-                self.send_command_reliable_and_to_next_state(relay_ON[Relay.AREA3.value-1],self.State.SELECTOR3)
+                self.send_command_reliable_and_to_next_state(relay_ON[Relay.AREA2.value-1],self.State.SELECTOR3)
             else:
                 self.state =self.State.SELECTOR3
         
@@ -249,8 +249,8 @@ class System:
                 "name": "lich tuoi 2",
                 "is_active": True,
                 # "state": Activity.State.READY.name,
-                "start_time": "18:48:00 10-06-2024",
-                "stop_time": "18:49:00 10-06-2024",
+                "start_time": "18:52:00 10-06-2024",
+                "stop_time": "18:53:00 10-06-2024",
                 "flow1": 5,
                 "flow2": 5,
                 "flow3": 5,
@@ -264,7 +264,7 @@ class System:
         act2 = Activity(**act2)
         self.activity_manager.add_activity(act2)
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
-        self.scheduler.SCH_Add_Task(self.activity_manager.remove_activity,0,10)
+        self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
         self.state = self.State.MIXER1
         self.flow1 = 5
         self.flow2 = 5
