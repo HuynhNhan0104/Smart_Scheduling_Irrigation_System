@@ -116,11 +116,13 @@ class ActivityManager:
         if len(self.activitiy_list) > 0:
             self.current_activity = self.activitiy_list[0]
             current_time = time.time()
-            
+            print("current activity")
+            print(self.current_activity.to_string())
+            print(f"current time: {current_time}")
             # check thời gian
             if self.current_activity.state == Activity.State.READY:
                 #  Thong bao sap dien ra hoat dong tuoi
-                if current_time > self.current_activity.stop_time:
+                if current_time >= self.current_activity.stop_time:
                     print(f"{self.current_activity.name} xoa khoi list vi co loi phat sinh")
                     self.remove_activity(self.current_activity)
                     
