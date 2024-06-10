@@ -83,7 +83,7 @@ class System:
             # sending command an check response
             if not self.is_waiting:
                 self.start_send = time.time()
-                self.modbus485.send_command(relay_ON[Relay.MIX1-1])
+                self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
                 self.is_waiting = True
             else:
                 reponse = self.modbus485.serial_read_data()
@@ -91,7 +91,7 @@ class System:
                 if reponse:
                     self.state = self.State.MIXER1_WATING
                 else:
-                    self.modbus485.send_command(relay_ON[Relay.MIX1-1])
+                    self.modbus485.send_command(relay_ON[Relay.MIX1.value-1])
                     
         elif self.state == self.State.MIXER1_WATING:
             pass
