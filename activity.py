@@ -144,7 +144,9 @@ class ActivityManager:
             elif self.current_activity.state == Activity.State.RUNNING:
                 if current_time < self.current_activity.stop_time:
                     # RUNNING OPERATION HERE
-                    self.p_trigger_func()
+                    if self.is_running:
+                        self.p_trigger_func()
+                        self.is_running =False
                     # 
                     delta_time = self.current_activity.stop_time - current_time
                     # if delta_time <= 60:
