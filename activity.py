@@ -76,6 +76,7 @@ class ActivityManager:
         self.is_running = False
         self.p_trigger_func = None
         self.p_stop_func = None
+        self.p_update_info_func = None
     
     def set_trigger_func(self,func):
         self.p_trigger_func = func
@@ -83,6 +84,9 @@ class ActivityManager:
     def set_stop_func(self,func):
         self.p_stop_func = func
         # self.current_activity
+    def set_update_info_func(self,func):
+        self.p_update_info_func = func
+        
     def get_current_activity_json(self):
         return self.activitiy_list[0].to_json() if len(self.activitiy_list) > 0 else None
     
@@ -92,14 +96,24 @@ class ActivityManager:
         return new_id
     
     def print_activity_list(self):
+        print("------------------------------current activity:-------------------------------")
+        print("[")
         for activity in self.activitiy_list:
             print(activity.to_string())
+        print("]")
         
     def add_activity(self,new_activity: Activity):
         new_activity.id = self.generate_id()
+        
+        # check start and end time:
+        if new_activity.start_time >= new_activity.stop_time:
+            print(f"khong the them Activity: #{new_activity.name}# vi start >= stop")
+            return -1
+        
         if len(self.activitiy_list) < MAX_ACTIVITIES:
             self.activitiy_list.append(new_activity)
-            sorted(self.activitiy_list, key= lambda x: (x.start_time, x.stop_time))
+            self.activitiy_list = sorted(self.activitiy_list, key= lambda x: (x.start_time, x.stop_time))
+            self.print_activity_list()
             return new_activity.id
         else:
             print("Activities List is full")
@@ -108,7 +122,7 @@ class ActivityManager:
     def remove_activity(self,activity: Activity):
         if len(self.activitiy_list) > 0:
             self.activitiy_list.remove(activity)
-            sorted(self.activitiy_list, key= lambda x: (x.start_time, x.stop_time))
+            # sorted(self.activitiy_list, key= lambda x: (x.start_time, x.stop_time))
             
         else:
             print("Activities List is empty")
@@ -129,6 +143,7 @@ class ActivityManager:
                 if current_time >= self.current_activity.stop_time:
                     print(f"{self.current_activity.name} xoa khoi list vi co loi phat sinh")
                     self.remove_activity(self.current_activity)
+                    self.print_activity_list()
                     
                 elif current_time < self.current_activity.start_time:
                     delta_time = self.current_activity.start_time - current_time
@@ -140,6 +155,7 @@ class ActivityManager:
                     self.current_activity.state = Activity.State.RUNNING
                     self.is_running = True
                     print(f"{self.current_activity.name} dang duoc tien hanh thuc hien")
+                    print(f"{datetime.datetime.now().strftime(datetime_format)}")
                     
             elif self.current_activity.state == Activity.State.RUNNING:
                 if current_time < self.current_activity.stop_time:
@@ -160,53 +176,97 @@ class ActivityManager:
                     
             elif self.current_activity.state == Activity.State.FINISH:
                 self.remove_activity(self.current_activity)
+                self.print_activity_list()
+                
                 # trigger action to stop
                 self.p_stop_func()
                 
             elif self.current_activity.state == Activity.State.NOT_ACTIVE:
                 pass
 
-
-# act1 = {
-#         # "id": -1,
-#         "name": "lich tuoi 1",
-#         "is_active": True,
-#         # "state": Activity.State.READY.name,
-#         "cycle": 1,
-#         "start_time": "11:02:00 10-06-2024" ,
-#         "stop_time": "11:03:00 10-06-2024",
-#         "flow1": 10,
-#         "flow2": 10,
-#         "flow3": 10,
-#         "selector": 1,
-#     }
-# act1 = Activity(**act1)
-# act2 = {
-#         # "id": -1,
-#         "name": "lich tuoi 2",
-#         "is_active": True,
-#         # "state": Activity.State.READY.name,
-#         "cycle": 1,
-#         "start_time": "11:04:00 10-06-2024",
-#         "stop_time": "11:05:00 10-06-2024",
-#         "flow1": 10,
-#         "flow2": 10,
-#         "flow3": 10,
-#         "selector": 1,
-#     }
-# act2 = Activity(**act2)
-
-# manager = ActivityManager()
-# manager.add_activity(act1)
-# manager.add_activity(act2)
+# datetime.datetime.fromtimestamp(self.start_time).strftime(datetime_format)
 
 
-# while True:
-#     try:
-#         manager.run_activity()
-#         time.sleep(0.1)
-#     except KeyboardInterrupt:
-#         break
+def trigger_func():
+    print("Lich tuoi bat dau")
+    
+    
+def stop_func():
+    print("Lich tuoi ket thuc")
+    
+    
+act1 = {
+        # "id": -1,
+        "name": "lich tuoi 1",
+        "is_active": True,
+        # "state": Activity.State.READY.name,
+        "start_time": "14:00:00 11-06-2024",
+        "stop_time": "14:00:30 11-06-2024",
+        "flow1": 5,
+        "flow2": 5,
+        "flow3": 5,
+        "selector1": 1,
+        "selector2": 1,
+        "selector3": 1,
+        "pump_in":5,
+        "pump_out":5,
+        "cycle": 1
+}
+act1 = Activity(**act1)
+act2 = {
+            # "id": -1,
+            "name": "lich tuoi 2",
+            "is_active": True,
+            # "state": Activity.State.READY.name,
+            "start_time": "14:02:00 11-06-2024",
+            "stop_time": "14:02:30 11-06-2024",
+            "flow1": 5,
+            "flow2": 5,
+            "flow3": 5,
+            "selector1": 1,
+            "selector2": 1,
+            "selector3": 1,
+            "pump_in":5,
+            "pump_out":5,
+            "cycle": 1
+    }
+act2 = Activity(**act2)
+
+
+act3 = {
+            # "id": -1,
+            "name": "lich tuoi 3",
+            "is_active": True,
+            # "state": Activity.State.READY.name,
+            "start_time": "14:01:00 11-06-2024",
+            "stop_time": "14:00:30 11-06-2024",
+            "flow1": 5,
+            "flow2": 5,
+            "flow3": 5,
+            "selector1": 1,
+            "selector2": 1,
+            "selector3": 1,
+            "pump_in":5,
+            "pump_out":5,
+            "cycle": 1
+    }
+act3 = Activity(**act3)
+
+manager = ActivityManager()
+manager.set_stop_func(stop_func)
+manager.set_trigger_func(trigger_func)
+manager.add_activity(act1)
+manager.add_activity(act2)
+manager.add_activity(act3)
+
+
+
+while True:
+    try:
+        manager.run_activity()
+        time.sleep(0.1)
+    except KeyboardInterrupt:
+        break
         
     
             

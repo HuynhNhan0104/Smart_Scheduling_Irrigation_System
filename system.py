@@ -61,9 +61,9 @@ class System:
     flow1 = 20
     flow2 = 20
     flow3 = 20
-    area_selector1 = 20
-    area_selector2 = 20
-    area_selector3 = 20
+    area_selector1 = 0
+    area_selector2 = 0
+    area_selector3 = 0
     pump_in = 10
     pump_out = 10
     cycle = 0
