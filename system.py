@@ -293,11 +293,12 @@ class System:
             if self.cycle > 0:
                 self.state = self.State.MIXER1
                 self.cycle -= 1
+                self.update_log(f"Cycle {self.cycle} is restarting")
             else: 
                 self.trigger = False               
                 self.state = self.State.IDLE
                 print(f"System in state : {self.state}")
-                
+                self.update_log(f"{self.current_irrigation.get('name')} is Finished")         
         else:
             print(f"SYSTEM IN ERROR: {self.state}")
                    
