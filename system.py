@@ -188,6 +188,8 @@ class System:
                 self.is_waiting_response = False
                 self.state = next_state
                 print(f"System in state : {next_state}")
+                self.update_log_flag = False
+                
             else:
                 self.start_send = time.time()
                 self.modbus485.send_command(command)
@@ -304,7 +306,8 @@ class System:
             if self.cycle > 0:
                 self.state = self.State.MIXER1
                 self.cycle -= 1
-            else:                
+            else: 
+                self.trigger = False               
                 self.state = self.State.IDLE
                 print(f"System in state : {self.state}")
                 
