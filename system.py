@@ -138,7 +138,10 @@ class System:
         
         
     def stop_action(self):
-        print("System is stop")
+        print("Activity is stop")
+        self.update_progess()
+        self.update_log(f"{self.current_irrigation.get('name')} is stopped")         
+        
         self.state = self.State.IDLE
         self.trigger = False
     
