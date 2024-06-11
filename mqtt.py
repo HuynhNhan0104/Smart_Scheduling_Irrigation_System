@@ -40,4 +40,4 @@ class MQTTHelper:
 
     def publish(self, topic, message):
         # print(message)                                                                                                                       
-        self.mqttClient.publish(topic, str(message), retain=True)
+        self.mqttClient.publish(topic, str(message), retain=True, qos=1)

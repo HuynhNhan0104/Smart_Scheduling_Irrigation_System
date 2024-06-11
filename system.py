@@ -299,7 +299,7 @@ class System:
             if self.update_log_flag:
                 self.update_log_flag = False
                 self.update_log(f"PUMP OUT is finished")
-                time.sleep(0.01)
+                # time.sleep(0.01)
             
         elif self.state == self.State.NEXT_CYCLE_WAITING:
             print("TURN OFF AREA ", Relay.AREA1.value)
