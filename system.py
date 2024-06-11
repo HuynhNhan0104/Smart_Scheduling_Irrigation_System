@@ -157,10 +157,10 @@ class System:
     def update_log(self, message):
         print(datetime.datetime.now().strftime("%H:%M:%S %d-%m-%Y")  )
     
-        current_time = datetime.datetime.now()#.strftime("%H:%M:%S")            
+        current_time = datetime.datetime.now().strftime("%H:%M:%S")            
         log = {
             "name": self.current_irrigation.get("name"),
-            "log": f"[{current_time.timestamp()}] {message}"
+            "log": f"[{current_time}] {message}"
         }
         self.mqtt_handler.publish("NhanHuynh/feeds/log",log)
         
