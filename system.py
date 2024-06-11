@@ -143,20 +143,7 @@ class System:
         
     def update_log(self, message):
     
-        current_time = datetime.datetime.now().strftime("%H:%M:%S")
-        # if state in [self.State.MIXER1, self.State.MIXER2, self.State.MIXER3, self.State.PUMP_IN, self.State.PUMP_OUT]:
-        #     # if value:
-        #     message = f"[{current_time}] {state.name} is stating"
-        #     # else:
-        #         # message = f"[{current_time}] {state.name} is finished"
-        # elif state in [self.State.MIXER1_WAITING, self.State.MIXER2_WAITING, self.State.MIXER3_WAITING, self.State.PUMP_IN_WAITING, self.State.PUMP_OUT_WAITING]:
-        #     message = f"[{current_time}] {state.name} is finished"
-        # elif state == self.State.NEXT_CYCLE_WAITING:
-        #     message = f"[{current_time}] Cycle { self.cycle} is finished"
-        # elif state == self.State.IDLE:
-        #     message = f"[{current_time}]  { self.current_irrigation.name} is starting\n"
-        #     message += f"[{current_time}] Cycle { self.cycle} is starting\n"
-            
+        current_time = datetime.datetime.now().strftime("%H:%M:%S")            
         log = {
             "name": self.current_irrigation.get("name"),
             "log": f"[{current_time}] {message}"
@@ -313,10 +300,22 @@ class System:
                 
         else:
             print(f"SYSTEM IN ERROR: {self.state}")
-        
-
-                
+                   
     def run(self):
+
+        self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
+        self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
+        while True:
+            self.scheduler.SCH_Update()                                                                                                        
+            self.scheduler.SCH_Dispatch_Tasks()                                                                                                           
+            time.sleep(TICK_CYCLE/1000)
+            
+            
+newSystem = System()
+newSystem.run()
+
+
+
         # act2 = {
         #         # "id": -1,
         #         "name": "lich tuoi 2",
@@ -336,14 +335,3 @@ class System:
         # }
         # act2 = Activity(**act2)
         # self.activity_manager.add_activity(act2)
-        self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
-        self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
-        while True:
-            self.scheduler.SCH_Update()                                                                                                        
-            self.scheduler.SCH_Dispatch_Tasks()                                                                                                           
-            time.sleep(TICK_CYCLE/1000)
-            
-            
-newSystem = System()
-newSystem.run()
-    
