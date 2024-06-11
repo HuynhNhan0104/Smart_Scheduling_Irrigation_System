@@ -39,5 +39,5 @@ class MQTTHelper:
         self.recvCallBack = func                                                                                                             
 
     def publish(self, topic, message):
-        print(message)                                                                                                                       
+        # print(message)                                                                                                                       
         self.mqttClient.publish(topic, str(message), retain=True)
