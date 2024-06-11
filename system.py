@@ -218,7 +218,14 @@ class System:
             self.state = self.State.IDLE
         elif self.state == self.State.IDLE:
             if self.trigger:
-                self.update_log(f"{self.current_irrigation.name} is starting ..." )
+                areas = []
+                if self.area_selector1:
+                    areas.append(1)
+                if self.area_selector2:
+                    areas.append(2)
+                if self.area_selector2:
+                    areas.append(3)
+                self.update_log(f"{self.current_irrigation.name} is starting in {self.cycle} cycles for {areas}" )
                 # self.update_log(f"{} is starting ..." )
                 self.update_log_flag = True
                 self.state = self.State.MIXER1 
@@ -284,7 +291,7 @@ class System:
             self.timeout_callback_to_stop(self.pump_out, relay_OFF[Relay.PUMP_IN.value-1],self.State.NEXT_CYCLE_WAITING)
             if self.update_log_flag:
                 self.update_log_flag = False
-                self.update_log(f"PUMP OUT 1 is finished")
+                self.update_log(f"PUMP OUT is finished")
             
         elif self.state == self.State.NEXT_CYCLE_WAITING:
             print("TURN OFF AREA ", Relay.AREA1.value)
