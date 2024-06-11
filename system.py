@@ -124,15 +124,15 @@ class System:
         
         
     def update_progess(self):
-        if self.trigger:
-            progess = int(self.run_time/self.total_time * 100)
-            progess = 100 if  progess > 100 else progess
-            message = {
-                "name": self.current_irrigation.get("name"),
-                "progress" : progess,
-                "state" : self.state.name
-            }
-            self.mqtt_handler.publish("NhanHuynh/feeds/progress",message)
+        # if self.trigger:
+        progess = int(self.run_time/self.total_time * 100)
+        progess = 100 if  progess > 100 else progess
+        message = {
+            "name": self.current_irrigation.get("name"),
+            "progress" : progess,
+            "state" : self.state.name
+        }
+        self.mqtt_handler.publish("NhanHuynh/feeds/progress",message)
             
         
         
