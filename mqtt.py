@@ -20,7 +20,8 @@ class MQTTHelper:
 
                                                                                                                                             
     def mqtt_recv_message(self, client, userdata, message):
-        self.recvCallBack(message.payload.decode("utf-8"))
+        # print("Recieve From: ", message.topic)
+        self.recvCallBack(message)
                                                                                                                                             
     def __init__(self):
         self.mqttClient = mqtt.Client()                                                                                                      

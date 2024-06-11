@@ -194,51 +194,12 @@ def trigger_func():
 def stop_func():
     print("Lich tuoi ket thuc")
     
+def main():
     
-act1 = {
-        # "id": -1,
-        "name": "lich tuoi 1",
-        "is_active": True,
-        # "state": Activity.State.READY.name,
-        "start_time": "14:00:00 11-06-2024",
-        "stop_time": "14:00:30 11-06-2024",
-        "flow1": 5,
-        "flow2": 5,
-        "flow3": 5,
-        "selector1": 1,
-        "selector2": 1,
-        "selector3": 1,
-        "pump_in":5,
-        "pump_out":5,
-        "cycle": 1
-}
-act1 = Activity(**act1)
-act2 = {
-            # "id": -1,
-            "name": "lich tuoi 2",
+    act1 = {
+            "name": "lich tuoi 1",
             "is_active": True,
-            # "state": Activity.State.READY.name,
-            "start_time": "14:02:00 11-06-2024",
-            "stop_time": "14:02:30 11-06-2024",
-            "flow1": 5,
-            "flow2": 5,
-            "flow3": 5,
-            "selector1": 1,
-            "selector2": 1,
-            "selector3": 1,
-            "pump_in":5,
-            "pump_out":5,
-            "cycle": 1
-    }
-act2 = Activity(**act2)
-
-
-act3 = {
-            # "id": -1,
-            "name": "lich tuoi 3",
-            "is_active": True,
-            # "state": Activity.State.READY.name,
-            "start_time": "14:01:00 11-06-2024",
+            "start_time": "14:00:00 11-06-2024",
             "stop_time": "14:00:30 11-06-2024",
             "flow1": 5,
             "flow2": 5,
@@ -250,23 +211,61 @@ act3 = {
             "pump_out":5,
             "cycle": 1
     }
-act3 = Activity(**act3)
+    act1 = Activity(**act1)
+    act2 = {
+                # "id": -1,
+                "name": "lich tuoi 2",
+                "is_active": True,
+                # "state": Activity.State.READY.name,
+                "start_time": "14:02:00 11-06-2024",
+                "stop_time": "14:02:30 11-06-2024",
+                "flow1": 5,
+                "flow2": 5,
+                "flow3": 5,
+                "selector1": 1,
+                "selector2": 1,
+                "selector3": 1,
+                "pump_in":5,
+                "pump_out":5,
+                "cycle": 1
+        }
+    act2 = Activity(**act2)
 
-manager = ActivityManager()
-manager.set_stop_func(stop_func)
-manager.set_trigger_func(trigger_func)
-manager.add_activity(act1)
-manager.add_activity(act2)
-manager.add_activity(act3)
+
+    act3 = {
+                # "id": -1,
+                "name": "lich tuoi 3",
+                "is_active": True,
+                # "state": Activity.State.READY.name,
+                "start_time": "14:01:00 11-06-2024",
+                "stop_time": "14:00:30 11-06-2024",
+                "flow1": 5,
+                "flow2": 5,
+                "flow3": 5,
+                "selector1": 1,
+                "selector2": 1,
+                "selector3": 1,
+                "pump_in":5,
+                "pump_out":5,
+                "cycle": 1
+        }
+    act3 = Activity(**act3)
+
+    manager = ActivityManager()
+    manager.set_stop_func(stop_func)
+    manager.set_trigger_func(trigger_func)
+    manager.add_activity(act1)
+    manager.add_activity(act2)
+    manager.add_activity(act3)
 
 
 
-while True:
-    try:
-        manager.run_activity()
-        time.sleep(0.1)
-    except KeyboardInterrupt:
-        break
+    while True:
+        try:
+            manager.run_activity()
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            break
         
     
             
