@@ -155,6 +155,7 @@ class System:
         self.activity_manager.add_activity(new_irrigation)
         
     def update_log(self, message):
+        print(datetime.datetime.now().strftime("%H:%M:%S %d-%m-%Y")  )
     
         current_time = datetime.datetime.now().strftime("%H:%M:%S")            
         log = {
