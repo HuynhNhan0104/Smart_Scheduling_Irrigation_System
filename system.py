@@ -130,7 +130,7 @@ class System:
             message = {
                 "name": self.current_irrigation.get("name"),
                 "progress" : progess,
-                "state" : self.state
+                "state" : self.state.name
             }
             self.mqtt_handler.publish("NhanHuynh/feeds/progress",message)
             
@@ -319,7 +319,7 @@ class System:
     def run(self):
 
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
-        self.scheduler.SCH_Add_Task(self.update_progess,0,15*1000)
+        self.scheduler.SCH_Add_Task(self.update_progess,0,5*1000)
         self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
         
         while True:
