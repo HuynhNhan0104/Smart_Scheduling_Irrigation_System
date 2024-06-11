@@ -290,9 +290,9 @@ class System:
             print("TURN OFF AREA ", Relay.AREA3.value)
             self.send_command_reliable(relay_OFF[Relay.AREA3.value-1],0)
             
+            self.cycle -= 1
             if self.cycle > 0:
                 self.state = self.State.MIXER1
-                self.cycle -= 1
                 self.update_log(f"Cycle {self.cycle} is restarting")
             else: 
                 self.trigger = False               
