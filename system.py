@@ -333,7 +333,7 @@ class System:
         # }
         # act2 = Activity(**act2)
         # self.activity_manager.add_activity(act2)
-        # self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
+        self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
         self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
         while True:
             self.scheduler.SCH_Update()                                                                                                        
