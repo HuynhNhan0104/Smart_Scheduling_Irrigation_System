@@ -114,7 +114,7 @@ class System:
         self.pump_in = pump_in
         self.pump_out = pump_out
         self.cycle = cycle
-        self.start_irrigation = time.now()
+        self.start_irrigation = time.time()
         self.total_time = cycle*(flow1 + flow2+ flow3 + pump_in + pump_out)
         self.run_time = 0
     
