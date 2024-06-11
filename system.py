@@ -209,6 +209,7 @@ class System:
             if reponse == 0:
                 self.run_time += duration
                 print(f"Progess: {int(self.run_time/self.total_time * 100)}")
+                self.update_progess()
                 self.is_waiting_response = False
                 self.update_log_flag = True
                 
@@ -322,7 +323,7 @@ class System:
     def run(self):
 
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
-        self.scheduler.SCH_Add_Task(self.update_progess,0,5*1000)
+        # self.scheduler.SCH_Add_Task(self.update_progess,0,5*1000)
         self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
         
         while True:
