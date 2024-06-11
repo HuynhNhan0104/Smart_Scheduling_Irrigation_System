@@ -308,10 +308,13 @@ class System:
             self.send_command_reliable(relay_OFF[Relay.AREA3.value-1],0)
             
             self.cycle -= 1
+            
             if self.cycle > 0:
+                print("Waiting next cycle")
                 self.state = self.State.MIXER1
                 self.update_log(f"Cycle {self.cycle} is restarting")
             else: 
+                print("last cycle is finished")
                 self.trigger = False               
                 self.state = self.State.IDLE
                 print(f"System in state : {self.state}")
