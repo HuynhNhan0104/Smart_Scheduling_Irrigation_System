@@ -225,7 +225,7 @@ class System:
                     areas.append(2)
                 if self.area_selector2:
                     areas.append(3)
-                self.update_log(f"{self.current_irrigation.get("name")} is starting in {self.cycle} cycles for {areas}" )
+                self.update_log(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}" )
                 # self.update_log(f"{} is starting ..." )
                 self.update_log_flag = True
                 self.state = self.State.MIXER1 
