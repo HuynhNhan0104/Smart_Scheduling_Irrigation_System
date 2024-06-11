@@ -311,17 +311,17 @@ class System:
             
             self.cycle -= 1
             
-            if self.cycle > 0:
-                print("Waiting next cycle")
-                self.state = self.State.MIXER1
-                self.update_log(f"Cycle {self.cycle} is restarting")
-            else: 
+            if self.cycle == 0:
                 print("last cycle is finished")
                 self.trigger = False               
                 self.state = self.State.IDLE
                 print(f"System in state : {self.state}")
                 self.update_progess()
                 self.update_log(f"{self.current_irrigation.get('name')} is Finished")         
+            else: 
+                print("Waiting next cycle")
+                self.state = self.State.MIXER1
+                self.update_log(f"Cycle {self.cycle} is restarting")
         else:
             print(f"SYSTEM IN ERROR: {self.state}")
                    
