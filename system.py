@@ -208,10 +208,12 @@ class System:
             # print(f"Response :{reponse}")
             if reponse == 0:
                 self.run_time += duration
+                print(f"Progess: {int(self.run_time/self.total_time * 100)}")
                 self.is_waiting_response = False
+                self.update_log_flag = True
+                
                 self.state = next_state
                 print(f"System in state : {next_state}")
-                self.update_log_flag = True
             else:
                 self.modbus485.send_command(off_commamd)
                 
@@ -312,6 +314,7 @@ class System:
                 self.trigger = False               
                 self.state = self.State.IDLE
                 print(f"System in state : {self.state}")
+                self.update_progess()
                 self.update_log(f"{self.current_irrigation.get('name')} is Finished")         
         else:
             print(f"SYSTEM IN ERROR: {self.state}")
