@@ -123,7 +123,20 @@ class System:
     
         
         
-    
+    def update_progess(self):
+        if self.trigger:
+            progess = int(self.run_time/self.total_time * 100)
+            progess = 100 if  progess > 100 else progess
+            message = {
+                "name": self.current_irrigation.get("name"),
+                "progress" : progess,
+                "state" : self.state
+            }
+            self.mqtt_handler.publish("NhanHuynh/feeds/progress",message)
+            
+        
+        
+        
     def stop_action(self):
         print("System is stop")
         self.state = self.State.IDLE
@@ -194,6 +207,7 @@ class System:
             reponse = self.modbus485.serial_read_data()
             # print(f"Response :{reponse}")
             if reponse == 0:
+                self.run_time += duration
                 self.is_waiting_response = False
                 self.state = next_state
                 print(f"System in state : {next_state}")
@@ -305,7 +319,9 @@ class System:
     def run(self):
 
         self.scheduler.SCH_Add_Task(self.finite_state_machine,0,10)
+        self.scheduler.SCH_Add_Task(self.update_progess,0,15*1000)
         self.scheduler.SCH_Add_Task(self.activity_manager.run_activity,0,10)
+        
         while True:
             self.scheduler.SCH_Update()                                                                                                        
             self.scheduler.SCH_Dispatch_Tasks()                                                                                                           
