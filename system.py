@@ -157,10 +157,10 @@ class System:
     def update_log(self, message):
         print(datetime.datetime.now().strftime("%H:%M:%S %d-%m-%Y")  )
     
-        current_time = datetime.datetime.now().strftime("%H:%M:%S")            
+        current_time = datetime.datetime.now()#.strftime("%H:%M:%S")            
         log = {
             "name": self.current_irrigation.get("name"),
-            "log": f"[{current_time}] {message}"
+            "log": f"[{current_time.timestamp()}] {message}"
         }
         self.mqtt_handler.publish("NhanHuynh/feeds/log",log)
         
@@ -301,7 +301,7 @@ class System:
                 self.update_log(f"PUMP OUT is finished")
             
         elif self.state == self.State.NEXT_CYCLE_WAITING:
-            time.sleep(1)
+            # time.sleep(1)
             
             print("TURN OFF AREA ", Relay.AREA1.value)
             self.send_command_reliable(relay_OFF[Relay.AREA1.value-1],0)
