@@ -45,7 +45,6 @@ class Task:
 # QUEUE = 1                                                                                                                                
 TICK_CYCLE = 10       
 print(f"Tick cycle is {TICK_CYCLE} ms or {TICK_CYCLE/1000} s")                                                                                                                   
-# q = Queue()    
 
 class Scheduler:
     TICK = 10

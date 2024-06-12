@@ -83,7 +83,7 @@ class Modbus485:
         if bytesToRead > 0:
             out = self.ser.read(bytesToRead)
             data_array = [b for b in out]
-            print(f"BUFFER: {data_array}")
+            # print(f"BUFFER: {data_array}")
             if len(data_array) >= 7:
                 array_size = len(data_array)
                 value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
