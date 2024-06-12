@@ -232,9 +232,6 @@ class System:
             if self.trigger:
                 areas = []
                 # print("tsst: " ,self.area_selector1)
-                print(type(self.area_selector1))
-                print(type(self.area_selector2))
-                print(type(self.area_selector3))
                 
                 if self.area_selector1:
                     areas.append("1")
