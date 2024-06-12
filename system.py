@@ -158,7 +158,7 @@ class System:
         self.activity_manager.add_activity(new_irrigation)
         
     def update_log(self, message):
-        print(datetime.datetime.now().strftime("%H:%M:%S %d-%m-%Y")  )
+        # print(datetime.datetime.now().strftime("%H:%M:%S %d-%m-%Y")  )
     
         current_time = datetime.datetime.now().strftime("%H:%M:%S")            
         log = {
@@ -240,10 +240,10 @@ class System:
                 self.update_log(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}" )
                 print(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}")
                 # self.update_log(f"{} is starting ..." )
-                print(f"System in state : {self.state}")
                 self.update_log_flag = True
                 # print("Mixer1 relay is turn ON")
                 self.state = self.State.MIXER1 
+                print(f"System in state : {self.state}")
                 
         elif self.state == self.State.MIXER1:
             self.send_command_reliable_and_to_next_state(relay_ON[Relay.MIX1.value-1], self.State.MIXER1_WAITING)
