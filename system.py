@@ -183,7 +183,7 @@ class System:
         if not self.is_waiting_response:
             self.start_send = time.time()
             # print()
-            print(f"System in state : {next_state}")
+            print(f"System in state : {self.state}")
             print(f"RELAY {command[0]} is turn on")
             self.modbus485.send_command(command)
             self.is_waiting_response = True
