@@ -182,7 +182,7 @@ class System:
     def send_command_reliable_and_to_next_state(self, command,next_state):
         if not self.is_waiting_response:
             self.start_send = time.time()
-            # print(f"Send: {command}")
+            print(f"RELAY {command[0]} is turn on")
             self.modbus485.send_command(command)
             self.is_waiting_response = True
         else:
@@ -199,13 +199,15 @@ class System:
                 self.modbus485.send_command(command)
                 
                 
-    def timeout_callback_to_stop(self, duration, off_commamd, next_state):
+    def timeout_callback_to_stop(self, duration, off_command, next_state):
         current = time.time()
         if not self.is_waiting_response:
             if current - self.start_send > duration:
                 # print(f"delta = {current - self.start_send}")
                 # print(f"Send: {off_commamd}")
-                self.modbus485.send_command(off_commamd)
+                print(f"RELAY {off_command[0]} is turn OFF")
+                
+                self.modbus485.send_command(off_command)
                 self.is_waiting_response = True
         else :        
             reponse = self.modbus485.serial_read_data()
@@ -220,7 +222,7 @@ class System:
                 self.state = next_state
                 print(f"System in state : {next_state}")
             else:
-                self.modbus485.send_command(off_commamd)
+                self.modbus485.send_command(off_command)
                 
     def finite_state_machine(self):
         if self.state == self.State.INIT:
@@ -236,9 +238,11 @@ class System:
                 if self.area_selector2:
                     areas.append(3)
                 self.update_log(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}" )
+                print(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}")
                 # self.update_log(f"{} is starting ..." )
                 print(f"System in state : {self.state}")
                 self.update_log_flag = True
+                # print("Mixer1 relay is turn ON")
                 self.state = self.State.MIXER1 
                 
         elif self.state == self.State.MIXER1:
