@@ -182,6 +182,8 @@ class System:
     def send_command_reliable_and_to_next_state(self, command,next_state):
         if not self.is_waiting_response:
             self.start_send = time.time()
+            # print()
+            print(f"System in state : {next_state}")
             print(f"RELAY {command[0]} is turn on")
             self.modbus485.send_command(command)
             self.is_waiting_response = True
@@ -191,7 +193,7 @@ class System:
             if reponse:
                 self.is_waiting_response = False
                 self.state = next_state
-                print(f"System in state : {next_state}")
+                # print(f"System in state : {next_state}")
                 self.update_log_flag = False
                 
             else:
@@ -228,6 +230,8 @@ class System:
         if self.state == self.State.INIT:
             print("System Initial...")
             self.state = self.State.IDLE
+            print(f"System in state : {self.state}")
+            
         elif self.state == self.State.IDLE:
             if self.trigger:
                 areas = []
@@ -245,7 +249,6 @@ class System:
                 self.update_log_flag = True
                 # print("Mixer1 relay is turn ON")
                 self.state = self.State.MIXER1 
-                print(f"System in state : {self.state}")
                 
         elif self.state == self.State.MIXER1:
             self.send_command_reliable_and_to_next_state(relay_ON[Relay.MIX1.value-1], self.State.MIXER1_WAITING)
