@@ -85,15 +85,15 @@ class System:
         print(json.dumps(self.current_irrigation,indent=4))
         if self.current_irrigation:
             kwargs = {
-                "flow1": self.current_irrigation.get("flow1"),
-                "flow2": self.current_irrigation.get("flow2"),
-                "flow3": self.current_irrigation.get("flow3"),
-                "selector1": self.current_irrigation.get("selector1"),
-                "selector2": self.current_irrigation.get("selector2"),
-                "selector3": self.current_irrigation.get("selector3"),
-                "pump_in": self.current_irrigation.get("pump_in"),
-                "pump_out": self.current_irrigation.get("pump_out"),
-                "cycle": self.current_irrigation.get("cycle")
+                "flow1": int(self.current_irrigation.get("flow1")),
+                "flow2": int(self.current_irrigation.get("flow2")),
+                "flow3": int(self.current_irrigation.get("flow3")),
+                "selector1": int(self.current_irrigation.get("selector1")),
+                "selector2": int(self.current_irrigation.get("selector2")),
+                "selector3": int(self.current_irrigation.get("selector3")),
+                "pump_in": int(self.current_irrigation.get("pump_in")),
+                "pump_out": int(self.current_irrigation.get("pump_out")),
+                "cycle": int(self.current_irrigation.get("cycle"))
             }
             self.set_config(**kwargs)
         self.state = self.State.IDLE
