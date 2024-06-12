@@ -143,7 +143,7 @@ class ActivityManager:
                 if current_time >= self.current_activity.stop_time:
                     print(f"{self.current_activity.name} xoa khoi list vi co loi phat sinh")
                     self.remove_activity(self.current_activity)
-                    self.print_activity_list()
+                    # self.print_activity_list()
                     
                 elif current_time < self.current_activity.start_time:
                     delta_time = self.current_activity.start_time - current_time
@@ -176,7 +176,7 @@ class ActivityManager:
                     
             elif self.current_activity.state == Activity.State.FINISH:
                 self.remove_activity(self.current_activity)
-                self.print_activity_list()
+                # self.print_activity_list()
                 
                 # trigger action to stop
                 self.p_stop_func()
