@@ -128,42 +128,42 @@ class Scheduler:
         
                                                                                                                                 
 
-class TaskManagament:
-    def __init__(self):
-        self.scheduler_run = True
-        self.scheduler = Scheduler()                                                                                                         
-        self.scheduler.SCH_Init()                                                                                                            
-        # self.system = IrrigationSystem()                                                                                                     
-    def remove_task(self,task):
-        self.scheduler.SCH_Delete(task)
+# class TaskManagament:
+#     def __init__(self):
+#         self.scheduler_run = True
+#         self.scheduler = Scheduler()                                                                                                         
+#         self.scheduler.SCH_Init()                                                                                                            
+#         # self.system = IrrigationSystem()                                                                                                     
+#     def remove_task(self,task):
+#         self.scheduler.SCH_Delete(task)
 
-    def run(self):
-        # self.scheduler.SCH_Add_Task(self.system.run_irrigation, 0, 1000)                                                                     
-        # self.scheduler.SCH_Add_Task(self.system.control_pump, 1000, 3000)                                                                    
-        try:
-            # self.scheduler.SCH_Add_Task(self.system.readSensor, 0, 1000) 
-            self.scheduler.SCH_Add_Task(Say_hello, 0, 0)     
-            task = self.scheduler.SCH_Add_Task(print_my_name,0,1000,name = "Nhan")    
-            # self.scheduler.SCH_Add_Task(self.remove_task,1000,0,task = task)                                                              
+#     def run(self):
+#         # self.scheduler.SCH_Add_Task(self.system.run_irrigation, 0, 1000)                                                                     
+#         # self.scheduler.SCH_Add_Task(self.system.control_pump, 1000, 3000)                                                                    
+#         try:
+#             # self.scheduler.SCH_Add_Task(self.system.readSensor, 0, 1000) 
+#             self.scheduler.SCH_Add_Task(Say_hello, 0, 0)     
+#             task = self.scheduler.SCH_Add_Task(print_my_name,0,1000,name = "Nhan")    
+#             # self.scheduler.SCH_Add_Task(self.remove_task,1000,0,task = task)                                                              
                                                                     
-            # self.system.cloud.connect()                                                                                                        
-        except Exception as e:
-            print("Error: ", e)
+#             # self.system.cloud.connect()                                                                                                        
+#         except Exception as e:
+#             print("Error: ", e)
             
         
             
             
-        while self.scheduler_run:
-            self.scheduler.SCH_Update()                                                                                                        
-            self.scheduler.SCH_Dispatch_Tasks()                                                                                                
-            time.sleep(TICK_CYCLE/1000)
+#         while self.scheduler_run:
+#             self.scheduler.SCH_Update()                                                                                                        
+#             self.scheduler.SCH_Dispatch_Tasks()                                                                                                
+#             time.sleep(TICK_CYCLE/1000)
 
 
-def Say_hello():
-    print("-----------------System Starting----------------")
+# def Say_hello():
+#     print("-----------------System Starting----------------")
 
-# my_scheduler = TaskManagament()
-# my_scheduler.run()
+# # my_scheduler = TaskManagament()
+# # my_scheduler.run()
 
 
 
