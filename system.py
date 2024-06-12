@@ -232,11 +232,15 @@ class System:
             if self.trigger:
                 areas = []
                 # print("tsst: " ,self.area_selector1)
-                if self.area_selector1 != "0":
+                print(type(self.area_selector1))
+                print(type(self.area_selector2))
+                print(type(self.area_selector3))
+                
+                if self.area_selector1:
                     areas.append("1")
-                if self.area_selector2 != "0":
+                if self.area_selector2:
                     areas.append("2")
-                if self.area_selector2 != "0":
+                if self.area_selector3:
                     areas.append("3")
                 self.update_log(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}" )
                 print(f"{self.current_irrigation.get('name')} is starting in {self.cycle} cycles for {areas}")
