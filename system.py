@@ -220,7 +220,7 @@ class System:
                 self.update_log_flag = True
                 
                 self.state = next_state
-                print(f"System in state : {next_state}")
+                # print(f"System in state : {next_state}")
             else:
                 self.modbus485.send_command(off_command)
                 
